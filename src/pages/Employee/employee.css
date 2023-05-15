@@ -1,0 +1,75 @@
+/* list */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 735px;
+    margin-top: 20px;
+    padding: 10px 10px 20px 10px;
+    border-radius: 12px;
+    box-shadow: 0px 5px 20px #F1F3F5;
+    background: #FBFCFD;
+}
+
+.action {
+    display: flex;
+    justify-content: end;
+    gap: 4px;
+}
+
+.btn_create {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 90px;
+    height: 35px;
+    border-radius: 6px;
+    background: #EDF6FF;
+    color: #0091FF;
+}
+
+.btn_action {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    width: 90px;
+    height: 35px;
+    border-radius: 6px;
+}
+
+.btn_delete {
+    background: #FFEFEF;
+    color: #E5484D;
+}
+
+.btn_delete_active {
+    background-color: rgb(241, 243, 245);
+    color: rgba(193, 200, 205, 0.8);
+}
+
+.hr_action {
+    width: 1150px;
+    height: 1px;
+    background: #DFE3E6;
+    margin: 10px auto;
+
+}
+
+button {
+    /* color: white !important; */
+}
+
+/* craete */
+.ant-tabs-tab {
+    width: 180px;
+    padding: 0 !important;
+    /* background: #E1F0FF !important; */
+    /* color: #0091FF !important; */
+}
+
+.ant-tabs-tab-active {
+    /* background: #0091FF !important; */
+    /* color: white !important; */
+}
