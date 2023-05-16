@@ -37,15 +37,6 @@ const CreateEmployee = () => {
   const [defaultSalary, setDefaultSalary] = useState<any>();
   const navigate = useNavigate();
   const rules = Rules();
-  // tab3
-  const [entitleOtChecked, setEntitleOtChecked] = useState(false);
-  const [operationalAllowancePaidChecked, setOperationalAllowancePaidChecked] =
-    useState(false);
-  useEffect(() => {
-    if (entitleOtChecked) {
-      setOperationalAllowancePaidChecked(false);
-    }
-  }, [entitleOtChecked]);
   // date time
   const [isDobEmpty, setIsDobEmpty] = useState(false);
   const [isDateStart, setIsDateStart] = useState(false);
@@ -59,8 +50,71 @@ const CreateEmployee = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IEmployee>();
-  const [entitle_ot] = watch(["entitle_ot"]);
-
+  // khi các values thay đổi
+  const [entitle_ot, basic_salary, grade_id] = watch([
+    "entitle_ot",
+    "basic_salary",
+    "grade_id",
+  ]);
+  // Thay đổi tiền lương (tab4)
+  useEffect(() => {
+    const safetyInsuranceNew = Number((3 / 100) * basic_salary);
+    const healthInsuranceNew = Number((1 / 100) * basic_salary);
+    setValue("health_insurance", healthInsuranceNew);
+    setValue("safety_insurance", safetyInsuranceNew);
+    setDefaultSalary((prev: any) => ({
+      ...prev,
+      safety_insurance: safetyInsuranceNew,
+      health_insurance: healthInsuranceNew,
+      basic_salary: basic_salary,
+    }));
+  }, [basic_salary]);
+  // Thay đổi grade
+  useEffect(() => {
+    const getBenefits = http.get<IResponseApi<IMarriage>>(
+      `benefit?grade_id=${grade_id}`
+    );
+    getBenefits.then((res: any) => {
+      setBenefits(res.data.data);
+    });
+    // const gradeName = grade?.filter((item) => item.id == e.target.value);
+    // setBenefits(gradeName as any);
+  }, [grade_id]);
+  // fecth api lấy default salary
+  useEffect(() => {
+    const getDefaultSalary = GetDefaultSalary();
+    getDefaultSalary.then((res: any) => {
+      setDefaultSalary(res.data.data);
+      setValue("basic_salary", defaultSalary?.basic_salary | 0);
+      setValue("audit_salary", defaultSalary?.audit_salary | 0);
+      setValue("safety_insurance", defaultSalary?.safety_insurance | 0);
+      setValue("health_insurance", defaultSalary?.health_insurance | 0);
+      setValue("meal_allowance", defaultSalary?.meal_allowance | 0);
+    });
+  }, []);
+  // fecth api
+  useEffect(() => {
+    const getBenefits = http.get<IResponseApi<IMarriage>>("benefit");
+    getBenefits.then((res: any) => {
+      setBenefits(res.data.data);
+    });
+    const getMarriage = http.get<IResponseApi<IMarriage>>("marriage");
+    getMarriage.then((res: any) => {
+      setMarriage(res.data.data);
+    });
+    const getDepartment = http.get<IResponseApi<IDepartment>>("department");
+    getDepartment.then((res: any) => {
+      setDepartment(res.data.data);
+    });
+    const getPosition = http.get<IResponseApi<IPosition>>("position");
+    getPosition.then((res: any) => {
+      setPosition(res.data.data);
+    });
+    const getGrade = http.get<IResponseApi<IGrade>>("grade");
+    getGrade.then((res: any) => {
+      setGrade(res.data.data);
+    });
+  }, []);
   // DatePicker
   const onChangeDob: DatePickerProps["onChange"] = (date, dateString) => {
     if (!date) {
@@ -95,65 +149,6 @@ const CreateEmployee = () => {
         toast.success("Record added");
       })
       .catch();
-  };
-  // fecth api
-  useEffect(() => {
-    const getDefaultSalary = GetDefaultSalary();
-    getDefaultSalary.then((res: any) => {
-      setDefaultSalary(res.data.data);
-      setValue("basic_salary", defaultSalary?.basic_salary | 0);
-      setValue("audit_salary", defaultSalary?.audit_salary | 0);
-      setValue("safety_insurance", defaultSalary?.safety_insurance | 0);
-      setValue("health_insurance", defaultSalary?.health_insurance | 0);
-      setValue("meal_allowance", defaultSalary?.meal_allowance | 0);
-    });
-  }, []);
-
-  useEffect(() => {
-    const getBenefits = http.get<IResponseApi<IMarriage>>("benefit");
-    getBenefits.then((res: any) => {
-      setBenefits(res.data.data);
-    });
-    const getMarriage = http.get<IResponseApi<IMarriage>>("marriage");
-    getMarriage.then((res: any) => {
-      setMarriage(res.data.data);
-    });
-    const getDepartment = http.get<IResponseApi<IDepartment>>("department");
-    getDepartment.then((res: any) => {
-      setDepartment(res.data.data);
-    });
-    const getPosition = http.get<IResponseApi<IPosition>>("position");
-    getPosition.then((res: any) => {
-      setPosition(res.data.data);
-    });
-    const getGrade = http.get<IResponseApi<IGrade>>("grade");
-    getGrade.then((res: any) => {
-      setGrade(res.data.data);
-    });
-  }, []);
-  //
-  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const safetyInsuranceNew = Number((3 / 100) * Number(e.target.value));
-    const healthInsuranceNew = Number((1 / 100) * Number(e.target.value));
-    const basicSalaryNew = Number(e.target.value);
-    setValue("health_insurance", healthInsuranceNew);
-    setValue("safety_insurance", safetyInsuranceNew);
-    setDefaultSalary((prev: any) => ({
-      ...prev,
-      safety_insurance: safetyInsuranceNew,
-      health_insurance: healthInsuranceNew,
-      basic_salary: basicSalaryNew,
-    }));
-  };
-  const handleChangeOption = (e: any) => {
-    const getBenefits = http.get<IResponseApi<IMarriage>>(
-      `benefit?grade_id=${e.target.value}`
-    );
-    getBenefits.then((res: any) => {
-      setBenefits(res.data.data);
-    });
-    // const gradeName = grade?.filter((item) => item.id == e.target.value);
-    // setBenefits(gradeName as any);
   };
   // render option
   const renderMarriageStatus = () => {
@@ -279,8 +274,9 @@ const CreateEmployee = () => {
                   register={{ ...register("name", rules.isRequired) }}
                   name="name"
                   type="text"
-                  label="Name*"
+                  label="Name"
                   id="name"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[342px]"
                   errorMessage={errors.name?.message}
                 ></Input>
@@ -291,7 +287,8 @@ const CreateEmployee = () => {
                   value=""
                   register={{ ...register("gender", rules.isRequired) }}
                   id="gender"
-                  label="Gender*"
+                  isRequired={true}
+                  label="Gender"
                   errorMessage={errors.gender?.message}
                 >
                   <option value="" disabled>
@@ -316,7 +313,8 @@ const CreateEmployee = () => {
                   htmlFor="dob"
                   className="block text-base font-medium text-[#11181C] w-[162px]"
                 >
-                  Date of birth*
+                  Date of birth
+                  <span className="text-[#E5484D]">*</span>
                 </label>
                 <div className="flex flex-col">
                   <Space direction="vertical">
@@ -348,8 +346,9 @@ const CreateEmployee = () => {
                   register={{ ...register("ktp_no", rules.isRequired) }}
                   name="ktp_no"
                   type="text"
-                  label="KTP No.*"
+                  label="KTP No."
                   id="ktp_no"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[342px]"
                   errorMessage={errors.ktp_no?.message}
                 ></Input>
@@ -360,8 +359,9 @@ const CreateEmployee = () => {
                   register={{ ...register("nc_id", rules.isRequired) }}
                   name="nc_id"
                   type="text"
-                  label="National Card ID*"
+                  label="National Card ID"
                   id="nc_id"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[342px]"
                   errorMessage={errors.nc_id?.message}
                 ></Input>
@@ -516,7 +516,8 @@ const CreateEmployee = () => {
                   htmlFor="contract_start_date"
                   className="block text-base font-medium text-[#11181C] w-[162px]"
                 >
-                  Date Start*
+                  Date Start
+                  <span className="text-[#E5484D]">*</span>
                 </label>
                 <div className="flex flex-col">
                   <Space direction="vertical">
@@ -538,7 +539,8 @@ const CreateEmployee = () => {
                   value=""
                   register={{ ...register("type", rules.isRequired) }}
                   id="type"
-                  label="Employee Type*"
+                  label="Employee Type"
+                  isRequired={true}
                   errorMessage={errors.type?.message}
                 >
                   {renderTypeEmployee()}
@@ -765,10 +767,10 @@ const CreateEmployee = () => {
                   register={{ ...register("basic_salary", rules.isRequired) }}
                   name="basic_salary"
                   type="number"
-                  label="Basic Salary*"
+                  label="Basic Salary"
                   id="basic_salary"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]"
-                  handleOnChange={handleOnChange}
                   errorMessage={errors.basic_salary?.message}
                 ></Input>
               </div>
@@ -777,8 +779,9 @@ const CreateEmployee = () => {
                   register={{ ...register("audit_salary", rules.isRequired) }}
                   name="audit_salary"
                   type="number"
-                  label="Basic Salary (Audit)*"
+                  label="Basic Salary (Audit)"
                   id="audit_salary"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]"
                   errorMessage={errors.audit_salary?.message}
                 ></Input>
@@ -790,8 +793,9 @@ const CreateEmployee = () => {
                   }}
                   name="safety_insurance"
                   type="number"
-                  label="Safety Insurance Amount*"
+                  label="Safety Insurance Amount"
                   id="safety_insurance"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]"
                   errorMessage={errors.safety_insurance?.message}
                 ></Input>
@@ -811,8 +815,9 @@ const CreateEmployee = () => {
                   register={{ ...register("meal_allowance", rules.isRequired) }}
                   name="meal_allowance"
                   type="number"
-                  label="Meal Allowance*"
+                  label="Meal Allowance"
                   id="meal_allowance"
+                  isRequired={true}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]"
                   errorMessage={errors.meal_allowance?.message}
                 ></Input>
@@ -838,7 +843,6 @@ const CreateEmployee = () => {
             <div className="w-1/2">
               <div className="flex items-center gap-4 mb-[10px]">
                 <Select
-                  handleChangeOption={handleChangeOption}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[260px]"
                   value=""
                   register={{ ...register("grade_id") }}

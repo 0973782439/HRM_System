@@ -16,7 +16,7 @@ export const rules = (getValues?: UseFormGetValues<any>): Rules => ({
     required: false,
   },
   isRequired: {
-    required: { value: true, message: "Please input " },
+    required: { value: true, message: "Please input" },
   },
   username: {
     required: { value: true, message: "Please enter " },

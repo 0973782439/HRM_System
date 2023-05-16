@@ -8,7 +8,7 @@ interface Props {
   value?: string;
   errorMessage?: string;
   className: string;
-  handleChangeOption?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  isRequired?: boolean;
 }
 const Select: React.FC<Props> = ({
   register,
@@ -18,7 +18,7 @@ const Select: React.FC<Props> = ({
   value,
   errorMessage,
   className,
-  handleChangeOption,
+  isRequired,
 }) => {
   return (
     <>
@@ -27,6 +27,7 @@ const Select: React.FC<Props> = ({
         className="block text-base font-medium text-[#11181C] w-[162px]"
       >
         {label}
+        {isRequired && <span className="text-[#E5484D]">*</span>}
       </label>
       <div className="flex flex-col">
         <select
@@ -35,7 +36,6 @@ const Select: React.FC<Props> = ({
           {...register}
           id={id}
           className={className}
-          onChange={handleChangeOption}
         >
           {children}
         </select>

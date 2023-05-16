@@ -72,12 +72,12 @@ const Login = () => {
             className="space-y-4 md:space-y-6"
           >
             <Input
-              register={{ ...register("username", rules.username) }}
               name="username"
               type="text"
               label="Username"
               id="username"
               className="bg-gray-100 text-black rounded-lg block w-full p-3 outline-none"
+              register={{ ...register("username", rules.username) }}
               errorMessage={errors.username?.message}
             ></Input>
             <Input

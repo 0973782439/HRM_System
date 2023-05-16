@@ -55,7 +55,6 @@ const ListEmployee = () => {
     row: any
   ) {
     const { name, checked } = e.target;
-
     if (name === "checkboxall") {
       const rowSelection = rowData?.data.map((item: any) => ({
         ...item,

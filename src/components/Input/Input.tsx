@@ -8,9 +8,9 @@ interface Props {
   register: any;
   label: string;
   id: string;
+  isRequired?: boolean;
   handleChangShowPass?: () => void;
   onlyGetNumber?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  handleOnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 const SvgShowPass = () => {
   return (
@@ -55,9 +55,9 @@ const Input: React.FC<Props> = ({
   register,
   label,
   id,
+  isRequired,
   handleChangShowPass,
   onlyGetNumber,
-  handleOnChange,
 }) => {
   return (
     <>
@@ -67,6 +67,7 @@ const Input: React.FC<Props> = ({
           className="block text-base font-medium text-[#11181C] w-[162px]"
         >
           {label}
+          {isRequired && <span className="text-[#E5484D]">*</span>}
         </label>
       )}
       <div className="flex flex-col">
@@ -86,9 +87,7 @@ const Input: React.FC<Props> = ({
             id={id}
             className={className}
             placeholder={placeholder}
-            min={0}
             onKeyPress={onlyGetNumber}
-            onChange={handleOnChange}
           />
           {name === "password" && (
             <button
