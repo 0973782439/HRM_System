@@ -10,6 +10,7 @@ import NotFound from "../components/NotFound/NotFound";
 import { ROUTER } from "../utils/path";
 import ListEmployee from "../pages/Employee/ListEmployee";
 import CreateEmployee from "../pages/Employee/CreateEmployee";
+import UpdateEmployee from "../pages/Employee/UpdateEmployee";
 
 //được bảo vệ
 function ProtectedRoute() {
@@ -49,6 +50,20 @@ const routersPublic = [
         element: (
           <LayoutDefault>
             <CreateEmployee></CreateEmployee>
+          </LayoutDefault>
+        ),
+      },
+    ],
+  },
+  {
+    path: "",
+    element: <ProtectedRoute></ProtectedRoute>,
+    children: [
+      {
+        path: ROUTER.edit_employee,
+        element: (
+          <LayoutDefault>
+            <UpdateEmployee></UpdateEmployee>
           </LayoutDefault>
         ),
       },

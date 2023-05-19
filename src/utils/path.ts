@@ -5,10 +5,12 @@ export const PATH_API = {
   logout: "logout",
   multiple_delete: "employee/multiple-delete",
   default_salary: "employee/get-default-salary",
+  upload: "employee-document/upload",
 };
 export const ROUTER = {
   home: "/employee",
-  create_employee: "/employee/create-employee",
+  create_employee: "/employee/create-or-update",
+  edit_employee: "/employee/create-or-update/:id",
   login: "/login",
   forgot_password: "/forgot-password",
   change_password: "/change-password",

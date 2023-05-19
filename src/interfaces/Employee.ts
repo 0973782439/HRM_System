@@ -58,7 +58,8 @@ export interface IEmployee {
   grade_name: string; //
   staff_id: string;
   old_staff_id: string;
-  benefit: IBenefit[];
+  benefits: IBenefit[];
+  document_upload: [];
   //   grade_prefix; //
   //   manager_id; //
   //   manager_name; //

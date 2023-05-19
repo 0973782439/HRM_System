@@ -11,6 +11,8 @@ import "./table.css";
 import Checkbox from "../Input/Checkbox";
 import numeral from "numeral";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
+import { ROUTER } from "../../utils/path";
 interface Props {
   rowData?: IEmployeeList;
   handleChangeCheckBox: (
@@ -18,7 +20,14 @@ interface Props {
     row: any
   ) => void;
 }
+
 const Table: React.FC<Props> = ({ rowData, handleChangeCheckBox }) => {
+  const navigate = useNavigate();
+  const handleUpdateEmployee = (id: number) => {
+    navigate(`${ROUTER.create_employee}/${id}`, {
+      replace: true,
+    });
+  };
   return (
     <>
       <div className="relative overflow-x-auto  sm:rounded-lg table-wrapper min-h-[525px] max-h-[525px]">
@@ -96,6 +105,7 @@ const Table: React.FC<Props> = ({ rowData, handleChangeCheckBox }) => {
                 return (
                   <tr
                     key={row.id}
+                    onDoubleClick={() => handleUpdateEmployee(row.id)}
                     className=" bg-[#F8F9FA] border-b hover:bg-[#EDF6FF]"
                   >
                     <td className="py-[3px] pl-[10px]">

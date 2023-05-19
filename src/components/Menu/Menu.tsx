@@ -11,6 +11,7 @@ import {
   Payroll,
   User,
 } from "../../assets/index";
+import { ROUTER } from "../../utils/path";
 type MenuItem = Required<MenuProps>["items"][number];
 function getItem(
   label: React.ReactNode,
@@ -49,7 +50,7 @@ const items: MenuItem[] = [
       <img src={Payroll} alt="" />
     ),
     getItem(
-      <Link to="/Employee">Employee Management</Link>,
+      <Link to={ROUTER.home}>Employee Management</Link>,
       "5",
       <img src={Global} alt="" />
     ),

@@ -13,3 +13,7 @@ export const PostEmployee = (data: IEmployee) =>
   http.post(PATH_API.employee, data);
 
 export const GetDefaultSalary = () => http.get(PATH_API.default_salary);
+export const GetEmployeeById = (id: number) =>
+  http.get(`${PATH_API.employee}/${id}`);
+export const EditEmployee = (id: any, data: IEmployee) =>
+  http.put(`${PATH_API.employee}/${id}`, data);
