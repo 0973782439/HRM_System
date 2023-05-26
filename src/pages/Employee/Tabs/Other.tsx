@@ -2,29 +2,32 @@ import React, { useEffect, useState } from "react";
 import { IGrade } from "../../../interfaces/Grade";
 import { IResponseApi } from "../../../interfaces/Common";
 import http from "../../../utils/http";
-import { Space, Select as SelectAntd, Form, Button, Input } from "antd";
-import moment from "moment";
+import { Space, Select, Form, Button, Input } from "antd";
 import { IBenefits } from "../../../interfaces/Benefits";
 import "../employee.css";
+import dayjs from "dayjs";
 
 const { TextArea } = Input;
-interface Props {}
-const Other: React.FC<Props> = ({}) => {
-  const [grade, setGrade] = useState<IGrade[]>();
-  const [benefits, setBenefits] = useState<IBenefits[]>();
-  const [images, setImages] = useState<{ file: File; createdAt: Date }[]>([]);
-
-  // fecth api
-  useEffect(() => {
-    const getGrade = http.get<IResponseApi<IGrade>>("grade");
-    getGrade.then((res: any) => {
-      setGrade(res.data.data);
-    });
-    const getBenefits = http.get<IResponseApi<IBenefits>>("benefit");
-    getBenefits.then((res: any) => {
-      setBenefits(res.data.data);
-    });
-  }, []);
+interface Props {
+  grade?: IGrade[];
+  benefits?: IBenefits[];
+  setBenefits?: any;
+  setFiles?: any;
+  images?: any;
+  setImages?: any;
+  setDeletedIdDocumnet?: any;
+  id?: string;
+}
+const Other: React.FC<Props> = ({
+  grade,
+  benefits,
+  setBenefits,
+  setFiles,
+  images,
+  setImages,
+  setDeletedIdDocumnet,
+  id,
+}) => {
   // Thay đổi grade
   const handleChangeGrade = (value: any) => {
     const getBenefits = http.get<IResponseApi<IBenefits>>(
@@ -35,8 +38,9 @@ const Other: React.FC<Props> = ({}) => {
     });
   };
   // Xoá document upload
-  function handleDeleteDocumentUpload(index: number) {
-    setImages((prevImages) => {
+  function handleDeleteDocumentUpload(index: number, id: number) {
+    setDeletedIdDocumnet((prev: any) => [...prev, id]);
+    setImages((prevImages: any) => {
       const updatedImages = [...prevImages];
       updatedImages.splice(index, 1);
       return updatedImages;
@@ -44,21 +48,24 @@ const Other: React.FC<Props> = ({}) => {
   }
   // handleChangeUpload
   useEffect(() => {
-    if (images.length < 1) return;
+    // if (images.length < 1) return;
     const newImageUrls: any = [];
-    images.forEach((image: any) => {
-      return newImageUrls.push(URL.createObjectURL(image.file));
+
+    images?.forEach((image: any) => {
+      return newImageUrls.push(image.file);
     });
-    // setImageURLs(newImageUrls);
+
+    setFiles(newImageUrls);
   }, [images]);
+
   const handleChangeUpload = (e: any) => {
     const selectedFiles = e.target.files;
     if (selectedFiles) {
       const updatedImages = Array.from(selectedFiles).map((file: any) => ({
         file,
-        createdAt: new Date(),
+        created_at: new Date(),
       }));
-      setImages((prevImages) => [...prevImages, ...updatedImages]);
+      setImages((prevImages: any) => [...prevImages, ...updatedImages]);
     }
   };
 
@@ -79,7 +86,7 @@ const Other: React.FC<Props> = ({}) => {
               className="text-base font-medium text-[#11181C] mb-[10px]"
               name="grade_id"
             >
-              <SelectAntd
+              <Select
                 onChange={handleChangeGrade}
                 options={grade?.map((item) => ({
                   value: item.id,
@@ -97,7 +104,7 @@ const Other: React.FC<Props> = ({}) => {
               className="text-base font-medium text-[#11181C] mb-[10px]"
               name="benefits"
             >
-              <SelectAntd
+              <Select
                 size="large"
                 mode="multiple"
                 allowClear
@@ -135,7 +142,7 @@ const Other: React.FC<Props> = ({}) => {
               label="HRM User Account"
               className="text-base font-medium text-[#11181C] mb-[10px]"
             >
-              <SelectAntd
+              <Select
                 disabled
                 size="large"
                 style={{
@@ -199,14 +206,6 @@ const Other: React.FC<Props> = ({}) => {
                   />
                 </Form.Item>
               </Space>
-              {/* <input
-                multiple
-                id="document_upload"
-                name="document_upload"
-                accept="image/*,.pdf,.csv,.xlsx,.docx"
-                type="file"
-                style={{ display: "none" }}
-              /> */}
             </label>
           </div>
         </div>
@@ -222,41 +221,50 @@ const Other: React.FC<Props> = ({}) => {
             </thead>
             <tbody className="text-xs">
               {images &&
-                images.map((file: any, index) => {
+                images?.map((file: any, index: number) => {
                   return (
                     <tr
                       key={index}
                       style={{ background: "rgb(248, 249, 250)" }}
                     >
                       <td className="text-center">{index}</td>
-                      <td className="px-[10px]">{file.file.name}</td>
+                      <td className="px-[10px] uppercase">
+                        {file.name
+                          ? file.name?.substring(file.name.lastIndexOf("/") + 1)
+                          : null || file.file.name}
+                      </td>
                       <td className="px-[10px]">
-                        {moment(file.createdAt).format("YYYY/MM/DD")}
+                        {dayjs(file.created_at).format("YYYY/MM/DD")}
                       </td>
                       <td className="flex justify-center items-center px-[10px]">
-                        {/* <a
-                              href=""
-                              target="_blank"
-                              className="px-3 py-2 rounded-md mx-[2px]"
-                              style={{ background: "rgb(233, 249, 238)" }}
+                        {id && (
+                          <a
+                            href={file.name}
+                            target="_blank"
+                            className="px-3 py-2 rounded-md mx-[2px]"
+                            style={{ background: "rgb(233, 249, 238)" }}
+                          >
+                            <svg
+                              width={15}
+                              height={16}
+                              viewBox="0 0 15 16"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
                             >
-                              <svg
-                                width={15}
-                                height={16}
-                                viewBox="0 0 15 16"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  clipRule="evenodd"
-                                  d="M13.5002 14.4502C13.7487 14.4502 13.9502 14.2487 13.9502 14.0002C13.9502 13.7517 13.7487 13.5502 13.5002 13.5502L1.5002 13.5502C1.25167 13.5502 1.05019 13.7517 1.05019 14.0002C1.05019 14.2487 1.25167 14.4502 1.50019 14.4502L13.5002 14.4502ZM11.0684 8.06855C11.2441 7.89281 11.2441 7.60789 11.0684 7.43215C10.8926 7.25642 10.6077 7.25642 10.432 7.43215L7.95017 9.91395L7.95017 2.00023C7.95017 1.7517 7.7487 1.55023 7.50017 1.55023C7.25164 1.55023 7.05017 1.7517 7.05017 2.00023L7.05017 9.91395L4.56837 7.43215C4.39263 7.25642 4.10771 7.25642 3.93197 7.43215C3.75624 7.60789 3.75624 7.89281 3.93197 8.06855L7.18197 11.3185C7.35771 11.4943 7.64263 11.4943 7.81837 11.3185L11.0684 8.06855Z"
-                                  fill="#30A46C"
-                                />
-                              </svg>
-                            </a> */}
+                              <path
+                                fillRule="evenodd"
+                                clipRule="evenodd"
+                                d="M13.5002 14.4502C13.7487 14.4502 13.9502 14.2487 13.9502 14.0002C13.9502 13.7517 13.7487 13.5502 13.5002 13.5502L1.5002 13.5502C1.25167 13.5502 1.05019 13.7517 1.05019 14.0002C1.05019 14.2487 1.25167 14.4502 1.50019 14.4502L13.5002 14.4502ZM11.0684 8.06855C11.2441 7.89281 11.2441 7.60789 11.0684 7.43215C10.8926 7.25642 10.6077 7.25642 10.432 7.43215L7.95017 9.91395L7.95017 2.00023C7.95017 1.7517 7.7487 1.55023 7.50017 1.55023C7.25164 1.55023 7.05017 1.7517 7.05017 2.00023L7.05017 9.91395L4.56837 7.43215C4.39263 7.25642 4.10771 7.25642 3.93197 7.43215C3.75624 7.60789 3.75624 7.89281 3.93197 8.06855L7.18197 11.3185C7.35771 11.4943 7.64263 11.4943 7.81837 11.3185L11.0684 8.06855Z"
+                                fill="#30A46C"
+                              />
+                            </svg>
+                          </a>
+                        )}
                         <button
-                          onClick={() => handleDeleteDocumentUpload(index)}
+                          type="button"
+                          onClick={() =>
+                            handleDeleteDocumentUpload(index, file.id)
+                          }
                           className="px-3 py-2 rounded-md mx-[2px]"
                           style={{ background: "rgb(255, 239, 239)" }}
                         >

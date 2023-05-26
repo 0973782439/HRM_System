@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { DatePicker, Form, Input, Select, Space } from "antd";
 import { IMarriage } from "../../../interfaces/Marriage";
-import http from "../../../utils/http";
-import { IResponseApi } from "../../../interfaces/Common";
 const genderState = [
   { value: 0, label: "Male" },
   { value: 1, label: "Female" },
 ];
 interface Props {
   id?: string;
+  marriage?: IMarriage[];
 }
-const Information: React.FC<Props> = ({ id }) => {
-  const [marriage, setMarriage] = useState<IMarriage[]>();
-  useEffect(() => {
-    const getMarriage = http.get<IResponseApi<IMarriage>>("marriage");
-    getMarriage.then((res: any) => {
-      setMarriage(res.data.data);
-    });
-  }, []);
+const Information: React.FC<Props> = ({ id, marriage }) => {
   // hàm chỉ nhận số
   const onlyGetNumber = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!/[0-9]/.test(e.key)) {
@@ -97,7 +89,7 @@ const Information: React.FC<Props> = ({ id }) => {
                 rules={[{ required: true, message: "" }]}
               >
                 <DatePicker
-                  format="YYYY-MM-DD"
+                  format="YYYY/MM/DD"
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[260px]"
                 />
               </Form.Item>

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Breadcrumb, Modal } from "antd";
+import { Breadcrumb, Form, Input, Modal, Space } from "antd";
 import "./employee.css";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { IEmployee, IEmployeeList, IFilter } from "../../interfaces/Employee";
@@ -11,6 +11,7 @@ import { EmployeeActions } from "../../app/Redux/Employee.slice";
 import { RootState } from "../../app/store";
 import Table from "../../components/Table/Table";
 import { DeleteMultipleEmployee } from "../../api/Employee.api";
+import { useForm } from "antd/lib/form/Form";
 
 const ListEmployee = () => {
   const [modal, setModal] = useState<boolean>(false);
@@ -19,29 +20,46 @@ const ListEmployee = () => {
   const [searchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  // Lấy query params trên url
+  const [form] = useForm();
+
+  /**
+   * Lấy query params trên url
+   */
   const page = searchParams.get("page");
   const search = searchParams.get("search");
   const filter: IFilter = {
     search: search,
     page: page,
   };
-  // ========== GET record in Saga
+  /**
+   * GET record in Saga
+   */
   const memoizedEmployeeList = useAppSelector((state: RootState) => {
     return state.employee.EmployeeList;
   });
   const getEmployeeListSaga = useMemo(() => {
     return memoizedEmployeeList;
   }, [memoizedEmployeeList]);
-  // ========= Set lại state sau khi lấy employee khi employee thay đổi
+  /**
+   * Set lại state sau khi lấy employee khi employee thay đổi
+   */
   useEffect(() => {
     setRowData(getEmployeeListSaga);
   }, [memoizedEmployeeList]);
-  // ========= lấy employee khi url thay đổi
+  /**
+   * lấy employee khi url thay đổi
+   */
   useEffect(() => {
     dispatch(EmployeeActions.fetchEmployee(filter));
   }, [page, search, dispatch]);
-  //=================Tìm kiếm =========================
+  useEffect(() => {
+    form.setFieldsValue({
+      search: search,
+    });
+  }, [search]);
+  /**
+   *  Tìm kiếm
+   */
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const keySearch = e.target.value;
     navigate(`?search=${keySearch}&page=1`, {
@@ -49,12 +67,34 @@ const ListEmployee = () => {
     });
   };
   const onSearch = useCallback(debounce(handleSearch), []);
-  // ======== Hàm select record để xoá ========
+
+  /**
+   * Hàm select record để xoá
+   */
+  const handleClickRow = (row: any) => {
+    const updatedRowData = rowData?.data.map((item: any) => {
+      if (item == row) {
+        return {
+          ...item,
+          isChecked: !item.isChecked,
+        };
+      }
+      return item;
+    });
+
+    setRowData((prev: any) => ({ ...prev, data: updatedRowData }));
+
+    const listId = updatedRowData
+      ?.filter((item) => item.isChecked)
+      .map((item) => item.id);
+    setListDelete(listId);
+  };
   var handleChangeCheckBox = function (
     e: React.ChangeEvent<HTMLInputElement>,
     row: any
   ) {
     const { name, checked } = e.target;
+
     if (name === "checkboxall") {
       const rowSelection = rowData?.data.map((item: any) => ({
         ...item,
@@ -76,7 +116,10 @@ const ListEmployee = () => {
       setListDelete(listId);
     }
   };
-  // ======== Hàm xoá employee ============
+
+  /**
+   * Hàm xoá employee
+   */
   const handleAgreeDeleteEmployee = () => {
     const json = DeleteMultipleEmployee({ record_ids: listDelete });
     json
@@ -91,31 +134,46 @@ const ListEmployee = () => {
     return (
       <div className="flex justify-between">
         <h1 className="text-4xl font-medium mt-3">Employee Management</h1>
-        <form className="hidden lg:block ">
-          <div className="relative">
-            <div className="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
-              <svg
-                className="w-5 h-5 text-gray-500"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
+        <Form form={form} className="hidden lg:block text-end">
+          <div className="flex items-center gap-4">
+            <Space wrap>
+              <Form.Item
+                className="text-base font-medium text-[#11181C] m-0"
+                name="search"
               >
-                <path
-                  fillRule="evenodd"
-                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  clipRule="evenodd"
+                <Input
+                  onChange={onSearch}
+                  placeholder="Search..."
+                  prefix={
+                    <svg
+                      width={20}
+                      height={20}
+                      viewBox="0 0 20 21"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M13.3334 9.1665C13.3334 11.7438 11.2441 13.8332 8.66675 13.8332C6.08941 13.8332 4.00008 11.7438 4.00008 9.1665C4.00008 6.58917 6.08941 4.49984 8.66675 4.49984C11.2441 4.49984 13.3334 6.58917 13.3334 9.1665ZM12.4119 13.8544C11.3854 14.6756 10.0834 15.1665 8.66675 15.1665C5.35304 15.1665 2.66675 12.4802 2.66675 9.1665C2.66675 5.8528 5.35304 3.1665 8.66675 3.1665C11.9805 3.1665 14.6667 5.8528 14.6667 9.1665C14.6667 10.5832 14.1758 11.8852 13.3546 12.9116L17.1382 16.695C17.3985 16.9554 17.3985 17.3776 17.1382 17.638C16.8778 17.8982 16.4557 17.8982 16.1953 17.638L12.4119 13.8544Z"
+                        fill="black"
+                      />
+                    </svg>
+                  }
+                  className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-[6px] px-3 outline-none w-[200px]"
                 />
-              </svg>
-            </div>
-            <input
+              </Form.Item>
+            </Space>
+          </div>
+
+          {/* <input
               onChange={(e) => onSearch(e)}
               type="text"
               name="search"
               className="bg-gray-50 outline-none border border-blue-300 text-gray-900 rounded-lg block w-[200px] pl-10 p-2"
               placeholder="Search..."
-            />
-          </div>
-        </form>
+            /> */}
+        </Form>
       </div>
     );
   };
@@ -204,6 +262,7 @@ const ListEmployee = () => {
         {renderActionCreateAndDelete()}
         {renderHr()}
         <Table
+          handleClickRow={handleClickRow}
           rowData={rowData}
           handleChangeCheckBox={handleChangeCheckBox}
         ></Table>

@@ -6,6 +6,7 @@ export const PATH_API = {
   multiple_delete: "employee/multiple-delete",
   default_salary: "employee/get-default-salary",
   upload: "employee-document/upload",
+  save_multiple: "contract/save-multiple",
 };
 export const ROUTER = {
   home: "/employee",

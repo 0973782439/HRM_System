@@ -12,7 +12,7 @@ const Pagination: React.FC<Props> = () => {
   const getEmployeeListSaga = useMemo(() => {
     return memoizedEmployeeList;
   }, [memoizedEmployeeList]);
-  const totalPage = Math.ceil((getEmployeeListSaga?.total || 0) / 20);
+  const totalPage = Math.ceil((getEmployeeListSaga?.total || 0) / 20) || 1;
   const current_page = getEmployeeListSaga?.current_page || 0;
   const last_page = getEmployeeListSaga?.last_page || 0;
   const RANGE = 2;

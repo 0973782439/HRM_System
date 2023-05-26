@@ -1,33 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Space, Select, Form, Checkbox } from "antd";
 import "../employee.css";
-import http from "../../../utils/http";
-import { IResponseApi } from "../../../interfaces/Common";
 import { IDepartment } from "../../../interfaces/Department";
 import { IPosition } from "../../../interfaces/Position";
 interface Props {
-  // isEntitle: boolean;
-  // handleChange: (e: any) => void;
+  isEntitle?: boolean;
+  setIsEntitle?: any;
+  position?: IPosition[];
+  department?: IDepartment[];
 }
-const Details: React.FC<Props> = ({}) => {
-  const [isEntitle, setIsEntitle] = useState<boolean>(true);
-  const [department, setDepartment] = useState<IDepartment[]>();
-  const [position, setPosition] = useState<IPosition[]>();
-  // fecth api
-  useEffect(() => {
-    const getDepartment = http.get<IResponseApi<IDepartment>>("department");
-    getDepartment.then((res: any) => {
-      setDepartment(res.data.data);
-    });
-    const getPosition = http.get<IResponseApi<IPosition>>("position");
-    getPosition.then((res: any) => {
-      setPosition(res.data.data);
-    });
-  }, []);
-
-  const handleChange = (e: any) => {
-    setIsEntitle(!e.target.checked);
-  };
+const Details: React.FC<Props> = ({
+  isEntitle,
+  setIsEntitle,
+  position,
+  department,
+}) => {
   return (
     <section className="container">
       <div className="title_required flex justify-between">
@@ -80,7 +67,7 @@ const Details: React.FC<Props> = ({}) => {
               className="mb-[10px]"
             >
               <Checkbox
-                onChange={handleChange}
+                onChange={(e) => setIsEntitle(e.target.checked)}
                 className="text-base font-medium text-[#11181C]"
               >
                 Entitled OT
@@ -105,7 +92,7 @@ const Details: React.FC<Props> = ({}) => {
           <Space wrap>
             <Form.Item name="operational_allowance_paid" className="mb-[10px]">
               <Checkbox
-                checked={isEntitle}
+                checked={!isEntitle}
                 disabled
                 className="text-base font-medium text-[#11181C]"
               >
@@ -118,7 +105,7 @@ const Details: React.FC<Props> = ({}) => {
           <Space wrap>
             <Form.Item name="attendance_allowance_paid" className="mb-[10px]">
               <Checkbox
-                checked={isEntitle}
+                checked={!isEntitle}
                 disabled
                 className="text-base font-medium text-[#11181C]"
               >
