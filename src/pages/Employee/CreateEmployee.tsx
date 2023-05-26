@@ -190,7 +190,7 @@ const CreateEmployee = () => {
       key: "1",
       label: (
         <div
-          className="py-[9px] rounded-md px-3 active"
+          className="flex py-[9px] rounded-md px-3 active"
           style={
             checkValidateInfomation
               ? { color: "red" }
@@ -198,6 +198,39 @@ const CreateEmployee = () => {
           }
         >
           Employee Infomation
+          {checkValidateInfomation && (
+            <span className="ml-2">
+              <svg
+                width={21}
+                height={20}
+                viewBox="0 0 21 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.4998 18.3337C15.1022 18.3337 18.8332 14.6027 18.8332 10.0003C18.8332 5.39795 15.1022 1.66699 10.4998 1.66699C5.89746 1.66699 2.1665 5.39795 2.1665 10.0003C2.1665 14.6027 5.89746 18.3337 10.4998 18.3337Z"
+                  stroke="#FFB7B9"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M10.5 6.66699V10.0003"
+                  stroke="#FFB7B9"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M10.5 13.333H10.5083"
+                  stroke="#FFB7B9"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          )}
         </div>
       ),
       children: <Information marriage={marriage}></Information>,
@@ -206,7 +239,7 @@ const CreateEmployee = () => {
       key: "2",
       label: (
         <div
-          className="py-[9px] rounded-md px-3 active"
+          className="flex py-[9px] rounded-md px-3 active"
           style={
             checkValidateContract
               ? { color: "red" }
@@ -214,6 +247,39 @@ const CreateEmployee = () => {
           }
         >
           Contract Information
+          {checkValidateContract && (
+            <span className="ml-2">
+              <svg
+                width={21}
+                height={20}
+                viewBox="0 0 21 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10.4998 18.3337C15.1022 18.3337 18.8332 14.6027 18.8332 10.0003C18.8332 5.39795 15.1022 1.66699 10.4998 1.66699C5.89746 1.66699 2.1665 5.39795 2.1665 10.0003C2.1665 14.6027 5.89746 18.3337 10.4998 18.3337Z"
+                  stroke="#FFB7B9"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M10.5 6.66699V10.0003"
+                  stroke="#FFB7B9"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M10.5 13.333H10.5083"
+                  stroke="#FFB7B9"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
+          )}
         </div>
       ),
       children: (
