@@ -1,11 +1,10 @@
-import { AppstoreOutlined, MailOutlined } from "@ant-design/icons";
 import { Menu, MenuProps, MenuTheme, Switch } from "antd";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Attendance,
   Leave,
-  Employee,
   Global,
   Master,
   Payroll,
@@ -26,64 +25,66 @@ function getItem(
     label,
   } as MenuItem;
 }
-const items: MenuItem[] = [
-  getItem(
-    <Link className="text-base font-medium" to="/">
-      Dashboard
-    </Link>,
-    "1"
-  ),
-  getItem(<div className="text-base font-medium">General</div>, "sub1", "", [
-    getItem(
-      <Link to="/products">Attendance Management</Link>,
-      "2",
-      <img src={Attendance} alt="" />
-    ),
-    getItem(
-      <Link to="/Leave">Leave Management</Link>,
-      "3",
-      <img src={Leave} alt="" />
-    ),
-    getItem(
-      <Link to="/Payroll">Payroll Management</Link>,
-      "4",
-      <img src={Payroll} alt="" />
-    ),
-    getItem(
-      <Link to={ROUTER.home}>Employee Management</Link>,
-      "5",
-      <img src={Global} alt="" />
-    ),
-    getItem(
-      <Link to="/User">User Management</Link>,
-      "6",
-      <img src={User} alt="" />
-    ),
-    getItem(
-      <Link to="/Master">Master Management</Link>,
-      "7",
-      <img src={Master} alt="" />
-    ),
-  ]),
-  getItem(
-    <>
-      <hr className="border-0 h-px bg-gradient-to-r from-gray-100 via-gray-300 to-gray-100" />
-      <div className="text-base font-medium">Advance</div>
-    </>,
-    "sub2",
-    "",
-    [
-      getItem(
-        <Link to="/products">Global Setting</Link>,
-        "8",
-        <img src={Global} alt="" />
-      ),
-    ]
-  ),
-];
+
 const MenuSidebar: React.FC = () => {
+  const { t } = useTranslation();
   const [mode] = useState<"vertical" | "inline">("inline");
   const [theme] = useState<MenuTheme>("light");
+  const items: MenuItem[] = [
+    getItem(
+      <Link className="text-base font-medium" to="/">
+        Dashboard
+      </Link>,
+      "1"
+    ),
+    getItem(<div className="text-base font-medium">General</div>, "sub1", "", [
+      getItem(
+        <Link to="/products">{t("MENU.attendance_management")}</Link>,
+        "2",
+        <img src={Attendance} alt="" />
+      ),
+      getItem(
+        <Link to="/Leave">{t("MENU.leave_management")}</Link>,
+        "3",
+        <img src={Leave} alt="" />
+      ),
+      getItem(
+        <Link to="/Payroll">{t("MENU.payroll_management")}</Link>,
+        "4",
+        <img src={Payroll} alt="" />
+      ),
+      getItem(
+        <Link to={ROUTER.home}>{t("MENU.employee_management")}</Link>,
+        "5",
+        <img src={Global} alt="" />
+      ),
+      getItem(
+        <Link to="/User">{t("MENU.user_management")}</Link>,
+        "6",
+        <img src={User} alt="" />
+      ),
+      getItem(
+        <Link to="/Master">{t("MENU.master_management")}</Link>,
+        "7",
+        <img src={Master} alt="" />
+      ),
+    ]),
+    getItem(
+      <>
+        <hr className="border-0 h-px bg-gradient-to-r from-gray-100 via-gray-300 to-gray-100" />
+        <div className="text-base font-medium">Advance</div>
+      </>,
+      "sub2",
+      "",
+      [
+        getItem(
+          <Link to="/products">Global Setting</Link>,
+          "8",
+          <img src={Global} alt="" />
+        ),
+      ]
+    ),
+  ];
   return (
     <aside className="flex z-20 flex-col flex-shrink-0 w-[330px] duration-200 bg-white">
       <div className="flex relative flex-col flex-1 pt-0 min-h-0">

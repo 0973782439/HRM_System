@@ -1,17 +1,26 @@
-import { Button, Modal, Popconfirm } from "antd";
+import { Button, Modal, Popconfirm, Popover } from "antd";
 import logo_header from "../../assets/logo-header.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { ROUTER } from "../../utils/path";
 import { Logout } from "../../api/Auth.api";
-import { error } from "console";
 import { clearAccesTokenLST } from "../../utils/token";
 import { useAppDispatch } from "../../app/hooks";
 import { AuthActions } from "../../app/Redux/Auth.slice";
-const Header = () => {
+import i18next from "i18next";
+enum Language {
+  vi = "vi",
+  en = "en",
+}
+const Header: React.FC = () => {
   const [modal, setModal] = useState<boolean>(false);
+  const [language, setLanguage] = useState(Language.en);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const handleChangeLanguage = (lng: Language) => {
+    i18next.changeLanguage(lng);
+    setLanguage(lng);
+  };
   // Hàm xử lý đăng xuất
   const handleAgreeLogout = () => {
     const json = Logout();
@@ -41,6 +50,58 @@ const Header = () => {
       </Link>
     </div>
   );
+  const content = (
+    <ul>
+      <li
+        onClick={() => handleChangeLanguage(Language.vi)}
+        className="w-full flex items-center px-4 py-2 border-b border-gray-200 rounded-t-lg dark:border-gray-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          id="flag-icons-gb"
+          viewBox="0 0 640 480"
+          style={{ width: 20, height: 12, marginRight: 6 }}
+        >
+          <path fill="#012169" d="M0 0h640v480H0z" />
+          <path
+            fill="#FFF"
+            d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"
+          />
+          <path
+            fill="#C8102E"
+            d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"
+          />
+          <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z" />
+          <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z" />
+        </svg>
+        <button> Tiếng Việt</button>
+      </li>
+      <li
+        onClick={() => handleChangeLanguage(Language.en)}
+        className="w-full flex items-center px-4 py-2 border-b border-gray-200 dark:border-gray-600"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          id="flag-icons-gb"
+          viewBox="0 0 640 480"
+          style={{ width: 20, height: 12, marginRight: 6 }}
+        >
+          <path fill="#012169" d="M0 0h640v480H0z" />
+          <path
+            fill="#FFF"
+            d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"
+          />
+          <path
+            fill="#C8102E"
+            d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"
+          />
+          <path fill="#FFF" d="M241 0v480h160V0H241zM0 160v160h640V160H0z" />
+          <path fill="#C8102E" d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z" />
+        </svg>
+        <button> Tiếng Anh</button>
+      </li>
+    </ul>
+  );
   return (
     <nav
       className="fixed z-30 w-full px-[30px] py-3 bg-white h-[60px]"
@@ -55,7 +116,50 @@ const Header = () => {
             </span>
           </a>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center gap-4">
+          <Popover content={content}>
+            <div
+              className="flex items-center rounded-lg px-3 py-2 h-8"
+              style={{ background: "rgb(241, 243, 245)" }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                id="flag-icons-gb"
+                viewBox="0 0 640 480"
+                style={{ width: 20, height: 12, marginRight: 6 }}
+              >
+                <path fill="#012169" d="M0 0h640v480H0z" />
+                <path
+                  fill="#FFF"
+                  d="m75 0 244 181L562 0h78v62L400 241l240 178v61h-80L320 301 81 480H0v-60l239-178L0 64V0h75z"
+                />
+                <path
+                  fill="#C8102E"
+                  d="m424 281 216 159v40L369 281h55zm-184 20 6 35L54 480H0l240-179zM640 0v3L391 191l2-44L590 0h50zM0 0l239 176h-60L0 42V0z"
+                />
+                <path
+                  fill="#FFF"
+                  d="M241 0v480h160V0H241zM0 160v160h640V160H0z"
+                />
+                <path
+                  fill="#C8102E"
+                  d="M0 193v96h640v-96H0zM273 0v480h96V0h-96z"
+                />
+              </svg>
+              <button className="btn btn-info">{language}</button>
+              <svg
+                width={20}
+                height={20}
+                className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv"
+                focusable="false"
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                data-testid="KeyboardArrowDownIcon"
+              >
+                <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+              </svg>
+            </div>
+          </Popover>
           <Popconfirm
             icon={<></>}
             placement="bottomRight"

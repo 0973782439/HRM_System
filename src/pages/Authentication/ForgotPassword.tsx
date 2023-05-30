@@ -1,20 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
-import Input from "../../components/Input/Input";
-import { useForm } from "react-hook-form";
 import { ROUTER } from "../../utils/path";
 import { ForgotPass } from "../../api/Auth.api";
-import { rules as Rules } from "../../utils/rules";
 import { toast } from "react-toastify";
 import { IForgotPass } from "../../interfaces/Authentication";
+import { Form, Input, Space } from "antd";
 
 const ForgotPassword = () => {
-  const rules = Rules();
   const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors },
-    handleSubmit,
-  } = useForm<IForgotPass>();
   const onSubmit = (values: IForgotPass) => {
     const json = ForgotPass(values);
     json
@@ -32,23 +24,20 @@ const ForgotPassword = () => {
       </h3>
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 md:space-y-6"
-          >
-            <Input
-              register={{ ...register("email", rules.email) }}
-              type="text"
-              name="email"
-              className="bg-gray-100 text-black rounded-lg block w-full p-3 outline-none"
-              label="Your work email"
-              id="email"
-              errorMessage={errors.email?.message}
-            ></Input>
-
+          <Form layout="vertical" autoComplete="off" onFinish={onSubmit}>
+            <Space wrap>
+              <Form.Item
+                label="Your work email"
+                className="text-base font-medium text-[#11181C] mb-[10px]"
+                name="email"
+                rules={[{ required: true, message: "Please enter email" }]}
+              >
+                <Input className="bg-gray-100 text-black text-base rounded-lg py-3 px-3 outline-none w-[300px]" />
+              </Form.Item>
+            </Space>
             <button
               type="submit"
-              className="w-full flex justify-center text-white bg-blue-500 hover:bg-blue-600 font-normal rounded-lg text-base py-3 px-5"
+              className="w-full flex justify-center text-white bg-blue-500 hover:bg-blue-600 font-normal rounded-lg text-base py-3 px-5 mt-1 mb-4"
             >
               Confirm & Send OTP
             </button>
@@ -58,7 +47,7 @@ const ForgotPassword = () => {
             >
               Back to Sing-In
             </Link>
-          </form>
+          </Form>
         </div>
       </div>
     </div>

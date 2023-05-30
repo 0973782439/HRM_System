@@ -35,6 +35,7 @@ const Other: React.FC<Props> = ({
     );
     getBenefits.then((res: any) => {
       setBenefits(res.data.data);
+      // setBenefits([]);
     });
   };
   // Xoá document upload

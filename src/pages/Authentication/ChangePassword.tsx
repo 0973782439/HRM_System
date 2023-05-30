@@ -1,6 +1,3 @@
-import { Link } from "react-router-dom";
-import logo from "../../assets/logo.png";
-
 const ChangePassword = () => {
   return (
     <div className="main mt-9 w-full max-w-[348px]">

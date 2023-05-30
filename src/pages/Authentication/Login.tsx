@@ -1,35 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Input from "../../components/Input/Input";
-import { useForm } from "react-hook-form";
 import { ILogIn } from "../../interfaces/Authentication";
-import Select from "../../components/Select/Select";
 import http from "../../utils/http";
-import { rules as Rules } from "../../utils/rules";
 import { IResponseApi } from "../../interfaces/Common";
 import { ICompany } from "../../interfaces/Company";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { AuthActions } from "../../app/Redux/Auth.slice";
 import { RootState } from "../../app/store";
 import { ROUTER } from "../../utils/path";
+import { Form, Input, Select, Space } from "antd";
 const Login = () => {
-  const [showPassword, setShowpassword] = useState<boolean>(false);
   const [factoryState, setFactoryState] = useState([]);
-  const rules = Rules();
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(
     (state: RootState) => state.common.isLoading
   );
-  // react hook form
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<ILogIn>();
-  // show-hide password
-  const handleChangShowPass = () => {
-    setShowpassword(!showPassword);
-  };
   // api để select company
   useEffect(() => {
     const data = http.get<IResponseApi<ICompany>>("company");
@@ -37,21 +22,11 @@ const Login = () => {
       setFactoryState(res.data.data);
     });
   }, []);
-  // render option company
-  const renderFactory = () => {
-    const arrFactory: JSX.Element[] = [
-      <option key={""} value={""} disabled>
-        Choose Factory
-      </option>,
-    ];
-    factoryState.map((factory: any, i) => {
-      arrFactory.push(
-        <option value={factory.id} key={factory.id}>
-          {factory.name}
-        </option>
-      );
-    });
-    return arrFactory;
+  //
+  const handleNoSpace = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (/\s/g.test(e.key)) {
+      e.preventDefault();
+    }
   };
   // Login
   const onSubmit = (values: ILogIn) => {
@@ -67,44 +42,53 @@ const Login = () => {
       <h3 className="text-4xl text-center leading-tight mb-5">Sign In</h3>
       <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
         <div className="p-6">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4 md:space-y-6"
-          >
-            <Input
-              name="username"
-              type="text"
-              label="Username"
-              id="username"
-              className="bg-gray-100 text-black rounded-lg block w-full p-3 outline-none"
-              register={{ ...register("username", rules.username) }}
-              errorMessage={errors.username?.message}
-            ></Input>
-            <Input
-              register={{ ...register("password", rules.password) }}
-              name="password"
-              type={showPassword ? "text" : "password"}
-              label="Password"
-              id="password"
-              className="bg-gray-100 text-black rounded-lg block w-full p-3 outline-none"
-              errorMessage={errors.password?.message}
-              handleChangShowPass={handleChangShowPass}
-            ></Input>
-            <Select
-              className="bg-gray-100 text-black rounded-lg block w-full p-3 outline-none"
-              value=""
-              register={{ ...register("company_id", rules.company_id) }}
-              id="company_id"
-              label="Factory"
-              errorMessage={errors.company_id?.message}
-            >
-              {renderFactory()}
-            </Select>
-
+          <Form layout="vertical" autoComplete="off" onFinish={onSubmit}>
+            <Space wrap>
+              <Form.Item
+                label="Username"
+                className="text-base font-medium text-[#11181C] mb-[10px]"
+                name="username"
+                rules={[{ required: true, message: "Please enter password" }]}
+              >
+                <Input
+                  onKeyPress={handleNoSpace}
+                  className="bg-gray-100 text-black text-base rounded-lg py-3 px-3 outline-none w-[300px]"
+                />
+              </Form.Item>
+            </Space>
+            <Space wrap>
+              <Form.Item
+                label="Password"
+                className="text-base font-medium text-[#11181C] mb-[10px]"
+                name="password"
+                rules={[{ required: true, message: "Please enter password" }]}
+              >
+                <Input.Password
+                  onKeyPress={handleNoSpace}
+                  className="bg-gray-100 text-black text-base rounded-lg py-3 px-3 outline-none w-[300px]"
+                />
+              </Form.Item>
+            </Space>
+            <Space wrap>
+              <Form.Item
+                label="Factory"
+                className="text-base font-medium text-[#11181C] mb-[10px]"
+                name="company_id"
+                rules={[{ required: true, message: "Please choose factory" }]}
+              >
+                <Select
+                  placeholder="Select Factory"
+                  options={factoryState?.map((item: ICompany) => ({
+                    value: item.id,
+                    label: item.name,
+                  }))}
+                />
+              </Form.Item>
+            </Space>
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex justify-center items-center text-white bg-blue-500 hover:bg-blue-600 font-normal rounded-lg text-base py-3 px-5"
+              className="w-full flex justify-center items-center text-white bg-blue-500 hover:bg-blue-600 font-normal rounded-lg text-base py-3 px-5 mt-6 mb-4"
             >
               {isLoading ? (
                 <svg
@@ -133,7 +117,7 @@ const Login = () => {
             >
               Forgot your password?
             </Link>
-          </form>
+          </Form>
         </div>
       </div>
     </div>

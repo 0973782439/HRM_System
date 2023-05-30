@@ -12,8 +12,10 @@ import { RootState } from "../../app/store";
 import Table from "../../components/Table/Table";
 import { DeleteMultipleEmployee } from "../../api/Employee.api";
 import { useForm } from "antd/lib/form/Form";
+import { useTranslation } from "react-i18next";
 
 const ListEmployee = () => {
+  const { t } = useTranslation();
   const [modal, setModal] = useState<boolean>(false);
   const [listDelete, setListDelete] = useState<number[]>();
   const [rowData, setRowData] = useState<IEmployeeList>();
@@ -133,7 +135,9 @@ const ListEmployee = () => {
   const renderTitleAndSearch = () => {
     return (
       <div className="flex justify-between">
-        <h1 className="text-4xl font-medium mt-3">Employee Management</h1>
+        <h1 className="text-4xl font-medium mt-3">
+          {t("MENU.employee_management")}
+        </h1>
         <Form form={form} className="hidden lg:block text-end">
           <div className="flex items-center gap-4">
             <Space wrap>
@@ -250,10 +254,10 @@ const ListEmployee = () => {
         separator=">"
         items={[
           {
-            title: "General",
+            title: <> {t("COMMON.general")}</>,
           },
           {
-            title: "Employee Management",
+            title: <> {t("MENU.employee_management")}</>,
           },
         ]}
       />

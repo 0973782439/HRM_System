@@ -50,6 +50,7 @@ const CreateEmployee = () => {
   // state upload contract
   const [formDataContract, setFormDataContract] = useState<any>([]); // mảng contract hiển thị table
   const [deletedIdContract, setDeletedIdContract] = useState([]);
+  const [isApiContract, setIsApiContract] = useState(false);
 
   /**
    * fecth api lấy default salary
@@ -132,12 +133,18 @@ const CreateEmployee = () => {
         navigate(ROUTER.home, {
           replace: true,
         });
+        const contractNew = formDataContract.map((item: any) => {
+          return {
+            ...item,
+            contract_date: dayjs(item.contract_date).format("YYYY-MM-DD"),
+          };
+        });
         const empoloyee_id = res.data.data.id;
         if (files && files.length > 0) {
           UpLoad(empoloyee_id, files, []);
         }
         if (formDataContract && formDataContract.length > 0) {
-          UploadContract(empoloyee_id, formDataContract, []);
+          UploadContract(empoloyee_id, contractNew, []);
         }
         toast.success("Record added");
       })
@@ -284,6 +291,7 @@ const CreateEmployee = () => {
       ),
       children: (
         <Contract
+          setIsApiContract={setIsApiContract}
           setDeletedIdContract={setDeletedIdContract}
           formDataContract={formDataContract}
           setFormDataContract={setFormDataContract}

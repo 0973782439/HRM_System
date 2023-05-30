@@ -1,4 +1,4 @@
-import { Breadcrumb, Form, Tabs, TabsProps, message } from "antd";
+import { Breadcrumb, Form, Tabs, TabsProps } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Information from "./Tabs/Information";
@@ -45,6 +45,7 @@ const UpdateEmployee = () => {
   // state upload contract
   const [formDataContract, setFormDataContract] = useState<any>([]); // mảng contract hiển thị table
   const [deletedIdContract, setDeletedIdContract] = useState([]);
+  const [isApiContract, setIsApiContract] = useState(false);
 
   /**
    * Hàm update employee
@@ -70,9 +71,14 @@ const UpdateEmployee = () => {
         navigate(ROUTER.home, {
           replace: true,
         });
-        const contractNew = formDataContract.filter(
-          (item: any) => typeof item.document === "object"
-        );
+        const contractNew = formDataContract
+          .map((item: any) => {
+            return {
+              ...item,
+              contract_date: dayjs(item.contract_date).format("YYYY-MM-DD"),
+            };
+          })
+          .filter((item: any) => typeof item.document === "object");
 
         if (files) {
           const fileNew = files.filter((file: any) => file != undefined);
@@ -80,8 +86,10 @@ const UpdateEmployee = () => {
         }
         if (!check) {
           UploadContract(id, contractNew, deletedIdContract);
+        } else if (isApiContract) {
+          UploadContract(id, [], deletedIdContract);
+          setIsApiContract(false);
         }
-
         toast.success("Change saved");
       })
       .catch((error: any) => {
@@ -170,7 +178,6 @@ const UpdateEmployee = () => {
       setBenefits(res.data.data);
     });
   }, []);
-
   /**
    * Tabs
    */
@@ -199,6 +206,7 @@ const UpdateEmployee = () => {
       ),
       children: (
         <Contract
+          setIsApiContract={setIsApiContract}
           id={id}
           setDeletedIdContract={setDeletedIdContract}
           formDataContract={formDataContract}

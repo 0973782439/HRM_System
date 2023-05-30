@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Space, Select, Form, Input, DatePicker } from "antd";
 import "../employee.css";
 import dayjs from "dayjs";
@@ -14,6 +14,7 @@ interface Props {
   setFormDataContract?: any;
   formDataContract?: any;
   setDeletedIdContract?: any;
+  setIsApiContract?: any;
 }
 
 const Contract: React.FC<Props> = ({
@@ -21,6 +22,7 @@ const Contract: React.FC<Props> = ({
   formDataContract,
   setFormDataContract,
   setDeletedIdContract,
+  setIsApiContract,
 }) => {
   const [contract, setContract] = useState<any>(); //đối tượng contract
   const [selectFileContract, setSelectFileContract] = useState<any>(); // chọn file để hiển thị
@@ -28,7 +30,7 @@ const Contract: React.FC<Props> = ({
     contract_date: false,
     name: false,
     document: "",
-  }); // chọn file để hiển thị
+  }); // thông báo lỗi
   /**
    * Huỷ chọn file
    */
@@ -51,7 +53,11 @@ const Contract: React.FC<Props> = ({
       ) {
         setFormDataContract((prev: any) => [...prev, contract]);
         setSelectFileContract(undefined);
-        setContract({ name: "", contract_date: "", document: "" });
+        setContract({
+          name: "",
+          contract_date: "",
+          document: "",
+        });
         setErrorMessageContract({
           name: false,
           contract_date: false,
@@ -80,14 +86,11 @@ const Contract: React.FC<Props> = ({
     setSelectFileContract(files[0]);
     setContract((prev: any) => ({ ...prev, [name]: files[0] }));
   };
-  const handleChangeContractDate: DatePickerProps["onChange"] = (
-    date,
-    dateString
-  ) => {
+  const handleChangeContractDate: DatePickerProps["onChange"] = (date) => {
     setErrorMessageContract((prev: any) => ({ ...prev, contract_date: false }));
     setContract((prev: any) => ({
       ...prev,
-      contract_date: dayjs(dateString).format("YYYY-MM-DD"),
+      contract_date: date,
     }));
   };
   /**
@@ -100,6 +103,7 @@ const Contract: React.FC<Props> = ({
       fileNew.splice(index, 1);
       return fileNew;
     });
+    setIsApiContract(true);
   };
   return (
     <section className="container">
@@ -168,9 +172,10 @@ const Contract: React.FC<Props> = ({
                   <Form.Item
                     label="Contract Date"
                     className="text-base font-medium text-[#11181C] mb-[10px]"
-                    name="contract_date"
+                    // name="contract_date"
                   >
                     <DatePicker
+                      value={contract?.contract_date}
                       onChange={handleChangeContractDate}
                       format="YYYY/MM/DD"
                       className={`${
@@ -314,6 +319,7 @@ const Contract: React.FC<Props> = ({
                             <td className="text-center">
                               {id && (
                                 <button
+                                  type="button"
                                   className="px-3 py-2 rounded-md mx-[2px]"
                                   style={{
                                     background: "rgb(233, 249, 238)",

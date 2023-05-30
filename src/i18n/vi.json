@@ -1,0 +1,19 @@
+{
+  "COMMON": {
+    "dashboard": "Bảng điều khiển",
+    "general": "Tổng quan",
+    "advance": "Nâng cao"
+  },
+  "LANGUAGE": {
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh"
+  },
+  "MENU": {
+    "employee_management": "Quản lý nhân sự",
+    "attendance_management": "Quản lý chấm công",
+    "leave_management": "Quản lý nghỉ phép",
+    "payroll_management": "Quản lý biên chế",
+    "user_management": "Quản lý người dùng",
+    "master_management": "Quản lý tổng thể"
+  }
+}

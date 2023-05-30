@@ -91,7 +91,7 @@
 }
 
 .ant-form-item-control-input {
-    width: 316px;
+    width: 300px;
 }
 
 .ant-select-selector {
@@ -116,4 +116,8 @@
 
 .ant-input {
     background: #F1F3F5
+}
+
+:where(.css-dev-only-do-not-override-yp8pcc).ant-form-vertical .ant-form-item-row {
+    flex-direction: inherit;
 }
