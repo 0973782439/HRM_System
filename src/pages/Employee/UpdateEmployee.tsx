@@ -1,6 +1,6 @@
 import { Breadcrumb, Form, Tabs, TabsProps } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Information from "./Tabs/Information";
 import Contract from "./Tabs/Contract";
 import Details from "./Tabs/Details";
@@ -21,6 +21,7 @@ import dayjs from "dayjs";
 import { UpLoad, UploadContract } from "../../api/Core.api";
 import { IEmployee } from "../../interfaces/Employee";
 import { IFormDataContractResponse } from "../../interfaces/Contract";
+import { clearAccesTokenLST } from "../../utils/token";
 
 interface IFileUpload {
   id: number;
@@ -278,7 +279,7 @@ const UpdateEmployee = () => {
             title: "General",
           },
           {
-            title: "Employee Management",
+            title: <Link to={ROUTER.home}>Employee Management</Link>,
           },
           {
             title: "Edit employee",

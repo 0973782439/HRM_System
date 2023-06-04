@@ -1,0 +1,49 @@
+:where(.css-dev-only-do-not-override-yp8pcc).ant-input-affix-wrapper>input.ant-input {
+    background: #F3F4F6;
+}
+
+.ant-select-selector {
+    background: #F1F3F5 !important;
+}
+
+.ant-form-item-row {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.ant-form-item-label {
+    width: 180px;
+    text-align: start !important;
+}
+
+.ant-form-item-control-input {
+    width: 300px;
+}
+
+.ant-select-selector {
+    display: flex;
+    align-items: center;
+    min-height: 46px;
+}
+
+:where(.css-dev-only-do-not-override-yp8pcc).ant-form-item .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::before {
+    content: "";
+}
+
+:where(.css-dev-only-do-not-override-yp8pcc).ant-form-item .ant-form-item-label>label.ant-form-item-required:not(.ant-form-item-required-mark-optional)::after {
+    display: inline-block;
+    margin-inline-end: 4px;
+    color: #ff4d4f;
+    font-size: 14px;
+    font-family: SimSun, sans-serif;
+    line-height: 1;
+    content: "*";
+}
+
+.ant-input {
+    background: #F1F3F5
+}
+
+:where(.css-dev-only-do-not-override-yp8pcc).ant-form-vertical .ant-form-item-row {
+    flex-direction: inherit;
+}

@@ -2,7 +2,9 @@
   "COMMON": {
     "dashboard": "Bảng điều khiển",
     "general": "Tổng quan",
-    "advance": "Nâng cao"
+    "advance": "Nâng cao",
+    "search": "Tìm kiếm",
+    "setting": "Cài đặt"
   },
   "LANGUAGE": {
     "vi": "Tiếng Việt",

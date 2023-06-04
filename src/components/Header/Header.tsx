@@ -8,6 +8,7 @@ import { clearAccesTokenLST } from "../../utils/token";
 import { useAppDispatch } from "../../app/hooks";
 import { AuthActions } from "../../app/Redux/Auth.slice";
 import i18next from "i18next";
+
 enum Language {
   vi = "vi",
   en = "en",
@@ -45,7 +46,7 @@ const Header: React.FC = () => {
       >
         Sing Up
       </Button>
-      <Link to={ROUTER.home} className="text-blue-500">
+      <Link to={ROUTER.reset_password} className="text-blue-500">
         Reset password
       </Link>
     </div>
@@ -104,7 +105,7 @@ const Header: React.FC = () => {
   );
   return (
     <nav
-      className="fixed z-30 w-full px-[30px] py-3 bg-white h-[60px]"
+      className="nav-header fixed z-30 w-full px-[30px] py-3 bg-white h-[60px]"
       style={{ boxShadow: "0px 3px 15px #ECEEF0" }}
     >
       <div className="flex justify-between items-center">

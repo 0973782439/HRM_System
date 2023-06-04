@@ -7,21 +7,22 @@ interface Props {
 }
 const LayoutDefault: React.FC<Props> = ({ children }) => {
   return (
-    <Fragment>
+    <div className="wrapper">
       <Header></Header>
       <div
-        className="flex gap-[46px] overflow-hiden bg-white pt-16"
+        className="flex w-full gap-[46px] overflow-hiden bg-white pt-16"
         style={{ background: "#F8F9FA" }}
       >
+        {/* lg:max-w-[1170px] */}
         <MenuSidebar></MenuSidebar>
-        <div className="w-full">
-          <main className="max-w-[1170px] h-[90vh] flex flex-col">
-            <div className="mt-[30px]">{children}</div>
-            <Footer className="flex justify-around items-end flex-grow"></Footer>
-          </main>
-        </div>
+        {/* <div className="w-full"> */}
+        <main className="max-w-[1170px] h-[90vh] flex flex-col list_employee">
+          <div className="mt-[30px]">{children}</div>
+          <Footer className="flex justify-around items-end flex-grow"></Footer>
+        </main>
+        {/* </div> */}
       </div>
-    </Fragment>
+    </div>
   );
 };
 

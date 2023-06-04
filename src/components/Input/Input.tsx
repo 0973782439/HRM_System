@@ -89,7 +89,7 @@ const Input: React.FC<Props> = ({
             placeholder={placeholder}
             onKeyPress={onlyGetNumber}
           />
-          {name === "password" && (
+          {/* {name === "password" && (
             <button
               type="button"
               className="pr-2"
@@ -97,7 +97,7 @@ const Input: React.FC<Props> = ({
             >
               {type === "password" ? SvgShowPass() : SvgHidePass()}
             </button>
-          )}
+          )} */}
         </div>
         {errorMessage && (
           <p className="text-red-600 bg-white text-xs italic">

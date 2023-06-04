@@ -74,6 +74,7 @@ const ListEmployee = () => {
    * Hàm select record để xoá
    */
   const handleClickRow = (row: any) => {
+    console.log("2");
     const updatedRowData = rowData?.data.map((item: any) => {
       if (item == row) {
         return {
@@ -169,14 +170,6 @@ const ListEmployee = () => {
               </Form.Item>
             </Space>
           </div>
-
-          {/* <input
-              onChange={(e) => onSearch(e)}
-              type="text"
-              name="search"
-              className="bg-gray-50 outline-none border border-blue-300 text-gray-900 rounded-lg block w-[200px] pl-10 p-2"
-              placeholder="Search..."
-            /> */}
         </Form>
       </div>
     );

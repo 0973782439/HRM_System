@@ -9,6 +9,7 @@ import { AuthActions } from "../../app/Redux/Auth.slice";
 import { RootState } from "../../app/store";
 import { ROUTER } from "../../utils/path";
 import { Form, Input, Select, Space } from "antd";
+import "./authentication.css";
 const Login = () => {
   const [factoryState, setFactoryState] = useState([]);
   const dispatch = useAppDispatch();
@@ -69,22 +70,22 @@ const Login = () => {
                 />
               </Form.Item>
             </Space>
-            <Space wrap>
-              <Form.Item
-                label="Factory"
-                className="text-base font-medium text-[#11181C] mb-[10px]"
-                name="company_id"
-                rules={[{ required: true, message: "Please choose factory" }]}
-              >
-                <Select
-                  placeholder="Select Factory"
-                  options={factoryState?.map((item: ICompany) => ({
-                    value: item.id,
-                    label: item.name,
-                  }))}
-                />
-              </Form.Item>
-            </Space>
+            {/* <Space wrap> */}
+            <Form.Item
+              label="Factory"
+              className="text-base font-medium text-[#11181C] mb-[10px]"
+              name="company_id"
+              rules={[{ required: true, message: "Please choose factory" }]}
+            >
+              <Select
+                placeholder="Select Factory"
+                options={factoryState?.map((item: ICompany) => ({
+                  value: item.id,
+                  label: item.name,
+                }))}
+              />
+            </Form.Item>
+            {/* </Space> */}
             <button
               type="submit"
               disabled={isLoading}

@@ -6,7 +6,7 @@ type Rules = {
     | "username"
     | "password"
     | "company_id"
-    | "repeatPassword"
+    | "password_confirmation"
     | "notRequired"
     | "isRequired"]: RegisterOptions;
 };
@@ -34,12 +34,13 @@ export const rules = (getValues?: UseFormGetValues<any>): Rules => ({
   },
   company_id: { required: { value: true, message: "Please choose " } },
   name: { required: { value: true, message: "Please input " } },
-  repeatPassword: {
-    required: { value: true, message: "requiredPassword" },
-    minLength: { value: 4, message: "maxLengthPassword" },
+  password_confirmation: {
+    required: { value: true, message: "Please enter " },
+    // minLength: { value: 4, message: "maxLengthPassword" },
     validate:
       typeof getValues === "function"
-        ? (value) => value === getValues("password") || "passwordDoNotMatch"
+        ? (value) =>
+            value === getValues("password") || "The passwords do not match "
         : undefined,
   },
 });

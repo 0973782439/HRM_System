@@ -3,7 +3,7 @@ import { TabsProps, Tabs, Breadcrumb, Form } from "antd";
 import "./employee.css";
 import { useForm } from "antd/lib/form/Form";
 import { GetDefaultSalary, PostEmployee } from "../../api/Employee.api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ROUTER } from "../../utils/path";
 import { toast } from "react-toastify";
 import Other from "./Tabs/Other";
@@ -365,7 +365,7 @@ const CreateEmployee = () => {
             title: "General",
           },
           {
-            title: "Employee Management",
+            title: <Link to={ROUTER.home}>Employee Management</Link>,
           },
           {
             title: "Add new employee",

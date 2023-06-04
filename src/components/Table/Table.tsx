@@ -110,7 +110,11 @@ const Table: React.FC<Props> = ({
                   <tr
                     key={row.id}
                     onDoubleClick={() => handleUpdateEmployee(row.id)}
-                    className=" bg-[#F8F9FA] border-b hover:bg-[#EDF6FF]"
+                    className={
+                      row?.isChecked
+                        ? "bg-[#E9F9EE] hover:bg-[#EDF6FF]"
+                        : "bg-[#F8F9FA] border-b hover:bg-[#EDF6FF]"
+                    }
                     onClick={(e) => handleClickRow(e, row)}
                   >
                     <td className="py-[3px] pl-[10px]">
@@ -121,30 +125,30 @@ const Table: React.FC<Props> = ({
                         rowData={row}
                       />
                     </td>
-                    <td className="py-[2px] pl-[10px] whitespace-nowrap">
+                    <td className="py-[6px] pl-[10px] whitespace-nowrap">
                       {row.staff_id}
                     </td>
-                    <td className="py-[2px] pl-[10px]">{row.name}</td>
-                    <td className="py-[2px] pl-[10px]">
+                    <td className="py-[6px] pl-[10px]">{row.name}</td>
+                    <td className="py-[6px] pl-[10px]">
                       {row.gender === EGender.Male ? "Male" : "Female"}
                     </td>
-                    <td className="py-[2px] pl-[10px]">{row.card_number}</td>
-                    <td className="py-[2px] pl-[10px]">
+                    <td className="py-[6px] pl-[10px]">{row.card_number}</td>
+                    <td className="py-[6px] pl-[10px]">
                       {row.bank_account_no}
                     </td>
-                    <td className="py-[2px] pl-[10px]">
+                    <td className="py-[6px] pl-[10px]">
                       {row.family_card_number}
                     </td>
-                    <td className="py-[2px] pl-[10px]">{row.marriage_code}</td>
-                    <td className="py-[2px] pl-[10px]">{row.mother_name}</td>
-                    <td className="py-[2px] pl-[10px]">{row.pob}</td>
-                    <td className="py-[2px] pl-[10px]">
+                    <td className="py-[6px] pl-[10px]">{row.marriage_code}</td>
+                    <td className="py-[6px] pl-[10px]">{row.mother_name}</td>
+                    <td className="py-[6px] pl-[10px]">{row.pob}</td>
+                    <td className="py-[6px] pl-[10px]">
                       {dayjs(row.dob).format("YYYY/MM/DD")}
                     </td>
-                    <td className="py-[2px] pl-[10px]">{row.home_address_1}</td>
-                    <td className="py-[2px] pl-[10px]">{row.home_address_2}</td>
-                    <td className="py-[2px] pl-[10px]">{row.nc_id}</td>
-                    <td className="py-[2px] pl-[10px]">
+                    <td className="py-[6px] pl-[10px]">{row.home_address_1}</td>
+                    <td className="py-[6px] pl-[10px]">{row.home_address_2}</td>
+                    <td className="py-[6px] pl-[10px]">{row.nc_id}</td>
+                    <td className="py-[6px] pl-[10px]">
                       {dayjs(row.contract_start_date).format("YYYY/MM/DD")}
                     </td>
                     <td className="py-[2px] pl-[10px]">

@@ -1,3 +1,4 @@
+import React, { Suspense } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "../app/hooks";
 import LayoutAuthentication from "../layouts/LayoutAuthentication/LayoutAuthentication";
@@ -8,10 +9,14 @@ import Login from "../pages/Authentication/Login";
 import { RootState } from "../app/store";
 import NotFound from "../components/NotFound/NotFound";
 import { ROUTER } from "../utils/path";
-import ListEmployee from "../pages/Employee/ListEmployee";
-import CreateEmployee from "../pages/Employee/CreateEmployee";
-import UpdateEmployee from "../pages/Employee/UpdateEmployee";
-
+import ResetPassword from "../pages/Authentication/ResetPassword";
+const UpdateEmployee = React.lazy(
+  () => import("../pages/Employee/UpdateEmployee")
+);
+const CreateEmployee = React.lazy(
+  () => import("../pages/Employee/CreateEmployee")
+);
+const ListEmployee = React.lazy(() => import("../pages/Employee/ListEmployee"));
 //được bảo vệ
 function ProtectedRoute() {
   const isAuthenticated = useAppSelector(
@@ -29,13 +34,23 @@ function RejectedRoute() {
 const routersPublic = [
   {
     path: "",
+    element: (
+      <LayoutDefault>
+        <ListEmployee></ListEmployee>
+      </LayoutDefault>
+    ),
+  },
+  {
+    path: "",
     element: <ProtectedRoute></ProtectedRoute>,
     children: [
       {
         path: `${ROUTER.home}`,
         element: (
           <LayoutDefault>
-            <ListEmployee></ListEmployee>
+            <Suspense fallback={<div>Loading...</div>}>
+              <ListEmployee />
+            </Suspense>
           </LayoutDefault>
         ),
       },
@@ -49,7 +64,9 @@ const routersPublic = [
         path: ROUTER.create_employee,
         element: (
           <LayoutDefault>
-            <CreateEmployee></CreateEmployee>
+            <Suspense fallback={<div>Loading...</div>}>
+              <CreateEmployee />
+            </Suspense>
           </LayoutDefault>
         ),
       },
@@ -63,7 +80,9 @@ const routersPublic = [
         path: ROUTER.edit_employee,
         element: (
           <LayoutDefault>
-            <UpdateEmployee></UpdateEmployee>
+            <Suspense fallback={<div>Loading...</div>}>
+              <UpdateEmployee />
+            </Suspense>
           </LayoutDefault>
         ),
       },
@@ -98,6 +117,14 @@ const routersPublic = [
         ),
       },
     ],
+  },
+  {
+    path: ROUTER.reset_password,
+    element: (
+      <LayoutDefault>
+        <ResetPassword></ResetPassword>
+      </LayoutDefault>
+    ),
   },
   {
     path: "*",

@@ -19,6 +19,7 @@ function* handleFetchEmployee(filter: IFilter) {
     }
   } catch (error: any) {
     yield call(clearAccesTokenLST);
+
     yield put(EmployeeActions.fetchEmployee(filter));
   }
 }

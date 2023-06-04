@@ -28,14 +28,22 @@ const Other: React.FC<Props> = ({
   setDeletedIdDocumnet,
   id,
 }) => {
+  const [nameGrade, setNameGrade] = useState<any>([]);
   // Thay đổi grade
   const handleChangeGrade = (value: any) => {
+    const gradeNew = grade?.filter((item: any) => item.id == value);
+    const benefitsGrade = gradeNew?.map((item: any) => {
+      const nameBenefits = item.benefits.map((item: any) => {
+        return item.name;
+      });
+      return nameBenefits;
+    });
+    setNameGrade(benefitsGrade);
     const getBenefits = http.get<IResponseApi<IBenefits>>(
       `benefit?grade_id=${value}`
     );
     getBenefits.then((res: any) => {
       setBenefits(res.data.data);
-      // setBenefits([]);
     });
   };
   // Xoá document upload
@@ -84,7 +92,7 @@ const Other: React.FC<Props> = ({
           <Space wrap>
             <Form.Item
               label="Grade"
-              className="text-base font-medium text-[#11181C] mb-[10px]"
+              className="text-base font-medium text-[#11181C] mb-[10px] "
               name="grade_id"
             >
               <Select
@@ -97,7 +105,21 @@ const Other: React.FC<Props> = ({
             </Form.Item>
           </Space>
         </div>
-
+        <div className="ml-[180px] p-1 max-w-[300px]">
+          {nameGrade.map((name: any) => {
+            return name.map((item: any) => {
+              return (
+                <span
+                  key={item}
+                  style={{ background: "rgb(230, 232, 235)" }}
+                  className="px-2 rounded-md mr-2"
+                >
+                  {item}
+                </span>
+              );
+            });
+          })}
+        </div>
         <div className="flex items-center gap-4">
           <Space wrap>
             <Form.Item
