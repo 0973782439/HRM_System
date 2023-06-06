@@ -8,6 +8,11 @@ export const PATH_API = {
   default_salary: "employee/get-default-salary",
   upload: "employee-document/upload",
   save_multiple: "contract/save-multiple",
+  marriage: "marriage",
+  department: "department",
+  position: "position",
+  grade: "grade",
+  benefit: "benefit",
 };
 export const ROUTER = {
   home: "/employee",

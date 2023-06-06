@@ -9,19 +9,13 @@ import Other from "./Tabs/Other";
 import { useForm } from "antd/lib/form/Form";
 import { EditEmployee, GetEmployeeById } from "../../api/Employee.api";
 import { toast } from "react-toastify";
-import { ROUTER } from "../../utils/path";
-import { IMarriage } from "../../interfaces/Marriage";
-import http from "../../utils/http";
-import { IResponseApi } from "../../interfaces/Common";
-import { IDepartment } from "../../interfaces/Department";
-import { IPosition } from "../../interfaces/Position";
-import { IGrade } from "../../interfaces/Grade";
+import { PATH_API, ROUTER } from "../../utils/path";
 import { IBenefits } from "../../interfaces/Benefits";
 import dayjs from "dayjs";
 import { UpLoad, UploadContract } from "../../api/Core.api";
 import { IEmployee } from "../../interfaces/Employee";
 import { IFormDataContractResponse } from "../../interfaces/Contract";
-import { clearAccesTokenLST } from "../../utils/token";
+import useFetchSelect from "../../hooks/useFetchSelect";
 
 interface IFileUpload {
   id: number;
@@ -33,12 +27,6 @@ const UpdateEmployee = () => {
   const [form] = useForm();
   const { id } = useParams();
   const [isEntitle, setIsEntitle] = useState<any>();
-  // state render select option
-  const [marriage, setMarriage] = useState<IMarriage[]>();
-  const [department, setDepartment] = useState<IDepartment[]>();
-  const [position, setPosition] = useState<IPosition[]>();
-  const [grade, setGrade] = useState<IGrade[]>();
-  const [benefits, setBenefits] = useState<IBenefits[]>();
   // state upload ảnh
   const [images, setImages] = useState();
   const [files, setFiles] = useState([]);
@@ -47,7 +35,12 @@ const UpdateEmployee = () => {
   const [formDataContract, setFormDataContract] = useState<any>([]); // mảng contract hiển thị table
   const [deletedIdContract, setDeletedIdContract] = useState([]);
   const [isApiContract, setIsApiContract] = useState(false);
-
+  // state render select option
+  const [marriage] = useFetchSelect(PATH_API.marriage);
+  const [department] = useFetchSelect(PATH_API.department);
+  const [position] = useFetchSelect(PATH_API.position);
+  const [grade] = useFetchSelect(PATH_API.grade);
+  const [benefits, setBenefits] = useFetchSelect(PATH_API.benefit);
   /**
    * Hàm update employee
    */
@@ -153,31 +146,6 @@ const UpdateEmployee = () => {
       .catch((error: any) => {
         toast.error(error.response.data.message);
       });
-    // select option Marriage
-    const getMarriage = http.get<IResponseApi<IMarriage>>("marriage");
-    getMarriage.then((res: any) => {
-      setMarriage(res.data.data);
-    });
-    // select option Department
-    const getDepartment = http.get<IResponseApi<IDepartment>>("department");
-    getDepartment.then((res: any) => {
-      setDepartment(res.data.data);
-    });
-    // select option Position
-    const getPosition = http.get<IResponseApi<IPosition>>("position");
-    getPosition.then((res: any) => {
-      setPosition(res.data.data);
-    });
-    // select option Grade
-    const getGrade = http.get<IResponseApi<IGrade>>("grade");
-    getGrade.then((res: any) => {
-      setGrade(res.data.data);
-    });
-    // select option Benefits
-    const getBenefits = http.get<IResponseApi<IBenefits>>("benefit");
-    getBenefits.then((res: any) => {
-      setBenefits(res.data.data);
-    });
   }, []);
   /**
    * Tabs

@@ -74,7 +74,6 @@ const ListEmployee = () => {
    * Hàm select record để xoá
    */
   const handleClickRow = (row: any) => {
-    console.log("2");
     const updatedRowData = rowData?.data.map((item: any) => {
       if (item == row) {
         return {

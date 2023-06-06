@@ -34,7 +34,7 @@ const Details: React.FC<Props> = ({
             >
               <Select
                 placeholder="Choose Department"
-                options={department?.map((item: IDepartment) => ({
+                options={department?.map((item) => ({
                   label: item.name,
                   value: item.id,
                 }))}
@@ -51,7 +51,7 @@ const Details: React.FC<Props> = ({
             >
               <Select
                 placeholder="Choose Position"
-                options={position?.map((item: IPosition) => ({
+                options={position?.map((item) => ({
                   label: item.name,
                   value: item.id,
                 }))}

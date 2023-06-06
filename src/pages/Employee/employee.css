@@ -65,11 +65,17 @@
     border-radius: 6px !important;
     justify-content: center;
     background: rgb(237, 246, 255) !important;
+    background: none !important;
 }
 
 :where(.css-dev-only-do-not-override-yp8pcc).ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active {
     background: rgb(0, 145, 255) !important;
+    /* background: none; */
 }
+
+/* .active-tab {
+    background: red;
+} */
 
 :where(.css-dev-only-do-not-override-yp8pcc).ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active>.ant-tabs-tab-btn>.active {
     color: rgb(237, 246, 255) !important;

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IGrade } from "../../../interfaces/Grade";
 import { IResponseApi } from "../../../interfaces/Common";
 import http from "../../../utils/http";
-import { Space, Select, Form, Button, Input } from "antd";
+import { Space, Select, Form, Input } from "antd";
 import { IBenefits } from "../../../interfaces/Benefits";
 import "../employee.css";
 import dayjs from "dayjs";
@@ -57,13 +57,10 @@ const Other: React.FC<Props> = ({
   }
   // handleChangeUpload
   useEffect(() => {
-    // if (images.length < 1) return;
     const newImageUrls: any = [];
-
     images?.forEach((image: any) => {
       return newImageUrls.push(image.file);
     });
-
     setFiles(newImageUrls);
   }, [images]);
 
@@ -98,8 +95,8 @@ const Other: React.FC<Props> = ({
               <Select
                 onChange={handleChangeGrade}
                 options={grade?.map((item) => ({
-                  value: item.id,
                   label: item.name,
+                  value: item.id,
                 }))}
               />
             </Form.Item>
@@ -173,10 +170,6 @@ const Other: React.FC<Props> = ({
                   maxHeight: "150px",
                   overflowY: "auto",
                 }}
-                options={benefits?.map((benefit) => ({
-                  label: benefit.name,
-                  value: benefit.id,
-                }))}
               />
             </Form.Item>
           </Space>
