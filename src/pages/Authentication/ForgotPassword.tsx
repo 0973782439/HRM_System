@@ -30,7 +30,23 @@ const ForgotPassword = () => {
                 label="Your work email"
                 className="text-base font-medium text-[#11181C] mb-[10px]"
                 name="email"
-                rules={[{ required: true, message: "Please enter email" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: "Please enter email",
+                  },
+                  {
+                    validator: (_, value) => {
+                      if (value && !value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                        return Promise.reject(
+                          new Error("Please enter a valid email")
+                        );
+                      }
+                      return Promise.resolve();
+                    },
+                  },
+                ]}
+                // rules={[{ required: true, message: "Please enter email" }]}
               >
                 <Input className="bg-gray-100 text-black text-base rounded-lg py-3 px-3 outline-none w-[300px]" />
               </Form.Item>

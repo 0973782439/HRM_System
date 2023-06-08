@@ -49,7 +49,13 @@ const Login = () => {
                 label="Username"
                 className="text-base font-medium text-[#11181C] mb-[10px]"
                 name="username"
-                rules={[{ required: true, message: "Please enter password" }]}
+                rules={[
+                  { required: true, message: "Please enter password" },
+                  {
+                    max: 30,
+                    message: "Username must be maximum 30 characters",
+                  },
+                ]}
               >
                 <Input
                   onKeyPress={handleNoSpace}

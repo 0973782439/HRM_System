@@ -316,10 +316,11 @@ const Contract: React.FC<Props> = ({
                             <td className="text-center">
                               {dayjs(file?.contract_date).format("YYYY/MM/DD")}
                             </td>
-                            <td className="text-center">
+                            <td className="flex justify-center items-center px-[10px]">
                               {id && (
-                                <button
-                                  type="button"
+                                <a
+                                  href={file.document}
+                                  target="_blank"
                                   className="px-3 py-2 rounded-md mx-[2px]"
                                   style={{
                                     background: "rgb(233, 249, 238)",
@@ -340,7 +341,7 @@ const Contract: React.FC<Props> = ({
                                       fill="#30A46C"
                                     />
                                   </svg>
-                                </button>
+                                </a>
                               )}
                               <button
                                 onClick={() =>

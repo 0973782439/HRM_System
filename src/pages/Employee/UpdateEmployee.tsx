@@ -27,6 +27,7 @@ const UpdateEmployee = () => {
   const [form] = useForm();
   const { id } = useParams();
   const [isEntitle, setIsEntitle] = useState<any>();
+  const [dataEdit, setDataEdit] = useState<IEmployee>();
   // state upload ảnh
   const [images, setImages] = useState();
   const [files, setFiles] = useState([]);
@@ -48,13 +49,34 @@ const UpdateEmployee = () => {
     const valueNew = await {
       ...values,
       dob: dayjs(values?.dob).format("YYYY-MM-DD"),
-      contract_start_date: dayjs(values?.contract_start_date).format(
-        "YYYY-MM-DD"
-      ),
-      meal_allowance_paid: values.meal_allowance_paid,
-      attendance_allowance_paid: !values.entitle_ot,
-      operational_allowance_paid: !values.entitle_ot,
-      benefits: values.benefits,
+      type: values.type ? values.type : dataEdit?.type,
+      department_id: values.department_id ? values.department_id : dataEdit?.department_id,
+      position_id: values.position_id ? values.position_id : dataEdit?.position_id,
+      grade_id: values.grade_id ? values.grade_id : dataEdit?.grade_id,
+      benefits: values.benefits ? values.benefits : dataEdit?.benefits,
+      remark: values.remark ? values.remark : dataEdit?.remark,
+      entitle_ot: values.entitle_ot != undefined ? values.entitle_ot : (dataEdit?.entitle_ot == '1' ? true : false),
+      meal_allowance_paid: values.meal_allowance_paid != undefined ? values.meal_allowance_paid : (dataEdit?.meal_allowance_paid == '1' ? true : false),
+      basic_salary: values.basic_salary
+        ? values.basic_salary
+        : dataEdit?.basic_salary,
+      audit_salary: values.basic_salary
+        ? values.audit_salary
+        : dataEdit?.audit_salary,
+      health_insurance: values.basic_salary
+        ? values.health_insurance
+        : dataEdit?.health_insurance,
+      meal_allowance: values.basic_salary
+        ? values.meal_allowance
+        : dataEdit?.meal_allowance,
+      safety_insurance: values.basic_salary
+        ? values.safety_insurance
+        : dataEdit?.safety_insurance,
+      contract_start_date: values.contract_start_date
+        ? dayjs(values?.contract_start_date).format("YYYY-MM-DD")
+        : dayjs(dataEdit?.contract_start_date).format("YYYY-MM-DD"),
+      attendance_allowance_paid: values.attendance_allowance_paid ? !values.entitle_ot : dataEdit?.attendance_allowance_paid,
+      operational_allowance_paid: values.operational_allowance_paid ? !values.entitle_ot : dataEdit?.operational_allowance_paid,
     };
     const check = formDataContract.every((item: any) =>
       item.hasOwnProperty("id")
@@ -110,6 +132,7 @@ const UpdateEmployee = () => {
     getEmployeeById
       .then((res: any) => {
         const employee_detail = res.data.data;
+        setDataEdit(employee_detail);
         const documents = employee_detail.documents.map(
           (document: IFileUpload) => {
             return {

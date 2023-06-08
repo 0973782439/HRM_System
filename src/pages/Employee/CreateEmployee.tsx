@@ -76,11 +76,17 @@ const CreateEmployee = () => {
     const valueNew = {
       ...values,
       dob: dayjs(values?.dob).format("YYYY-MM-DD"),
+      basic_salary: values.basic_salary ? values.basic_salary : 0,
+      audit_salary: values.basic_salary ? values.audit_salary : 0,
+      health_insurance: values.basic_salary ? values.health_insurance : 0,
+      meal_allowance: values.basic_salary ? values.meal_allowance : 0,
+      safety_insurance: values.basic_salary ? values.safety_insurance : 0,
       type: String(values.type),
       contract_start_date: dayjs(values?.contract_start_date).format(
         "YYYY-MM-DD"
       ),
-      meal_allowance_paid: values.meal_allowance_paid,
+      entitle_ot: values.entitle_ot ? values.entitle_ot : false,
+      meal_allowance_paid: values.meal_allowance_paid ? values.meal_allowance_paid : false,
       attendance_allowance_paid: !values.entitle_ot,
       operational_allowance_paid: !values.entitle_ot,
     };
@@ -130,7 +136,7 @@ const CreateEmployee = () => {
           });
       })
 
-      .catch(() => {
+      .catch((error) => {
         setCheckValidateInfomation(true);
         if (tabKey === "2") {
           form
@@ -197,7 +203,7 @@ const CreateEmployee = () => {
           )}
         </div>
       ),
-      children: <Information marriage={marriage}></Information>,
+      children: <Information form={form} marriage={marriage}></Information>,
     },
     {
       key: "2",
@@ -339,9 +345,9 @@ const CreateEmployee = () => {
               checkAdd && !checkValidateContract
                 ? { background: "rgb(0, 145, 255)" }
                 : {
-                    background: "rgba(193, 200, 205, 0.24)",
-                    color: "rgba(193, 200, 205, 0.8)",
-                  }
+                  background: "rgba(193, 200, 205, 0.24)",
+                  color: "rgba(193, 200, 205, 0.8)",
+                }
             }
           >
             Add

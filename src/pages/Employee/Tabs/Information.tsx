@@ -1,6 +1,7 @@
 import React from "react";
 import { DatePicker, Form, Input, Select, Space } from "antd";
 import { IMarriage } from "../../../interfaces/Marriage";
+import { useForm } from "antd/lib/form/Form";
 const genderState = [
   { value: 0, label: "Male" },
   { value: 1, label: "Female" },
@@ -8,12 +9,23 @@ const genderState = [
 interface Props {
   id?: string;
   marriage?: IMarriage[];
+  form?: any
 }
-const Information: React.FC<Props> = ({ id, marriage }) => {
+const Information: React.FC<Props> = ({ id, marriage, form }) => {
+
   // hàm chỉ nhận số
   const onlyGetNumber = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!/[0-9]/.test(e.key)) {
       e.preventDefault();
+    }
+  };
+  const validateFields = async (nameInput: string) => {
+    try {
+      await form.validateFields([nameInput]);
+      // Xử lý khi tất cả các trường hợp lệ
+    } catch (errors) {
+      console.log(errors)
+      // Xử lý khi có lỗi
     }
   };
   return (
@@ -53,7 +65,7 @@ const Information: React.FC<Props> = ({ id, marriage }) => {
                 name="name"
                 rules={[{ required: true, message: "Please input Name" }]}
               >
-                <Input className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]" />
+                <Input onBlur={() => validateFields('name')} className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]" />
               </Form.Item>
             </Space>
           </div>
