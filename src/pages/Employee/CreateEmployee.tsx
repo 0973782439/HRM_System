@@ -44,7 +44,7 @@ const CreateEmployee = () => {
   const [formDataContract, setFormDataContract] = useState<any>([]); // mảng contract hiển thị table
   const [deletedIdContract, setDeletedIdContract] = useState([]);
   const [isApiContract, setIsApiContract] = useState(false);
-
+  const [activeTab, setActiveTab] = useState('tab1');
   /**
    * fecth api lấy default salary
    */
@@ -118,7 +118,12 @@ const CreateEmployee = () => {
   /**
    * Check validate tabs
    */
+  const isTabValid = (tabKey: string) => {
+    const fieldsInTab = form.getFieldsError().filter((field: any) => field.name[0] === tabKey);
+    return fieldsInTab.every((field: any) => !field.rules?.some((rule: any) => rule.required && !form.getFieldValue(field.name)));
+  };
   const handleTabChange = (tabKey: string) => {
+    setActiveTab(tabKey);
     form
       .validateFields(infomation)
       .then(() => {
@@ -130,26 +135,18 @@ const CreateEmployee = () => {
             setCheckValidateContract(false);
           })
           .catch((error) => {
-            if (error.errorFields && tabKey === "2") {
-              setCheckValidateContract(true);
-            }
+            setCheckValidateContract(true);
           });
-      })
-
-      .catch((error) => {
+      }).catch(() => {
         setCheckValidateInfomation(true);
-        if (tabKey === "2") {
-          form
-            .validateFields(contract)
-            .then(() => {
-              setCheckValidateContract(false);
-            })
-            .catch((error) => {
-              if (error.errorFields && tabKey === "2") {
-                setCheckValidateContract(true);
-              }
-            });
-        }
+        form
+          .validateFields(contract)
+          .then(() => {
+            setCheckValidateContract(false);
+          })
+          .catch((error) => {
+            setCheckValidateContract(true);
+          });
       });
   };
   /**
@@ -160,7 +157,7 @@ const CreateEmployee = () => {
       key: "1",
       label: (
         <div
-          className="flex py-[9px] rounded-md px-3 active active-tab"
+          className={isTabValid('1') ? " active-tab" : "flex py-[9px] rounded-md px-3 active"}
           style={
             checkValidateInfomation
               ? { color: "red" }

@@ -73,9 +73,9 @@
     /* background: none; */
 }
 
-/* .active-tab {
+.active-tab {
     background: red;
-} */
+}
 
 :where(.css-dev-only-do-not-override-yp8pcc).ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active>.ant-tabs-tab-btn>.active {
     color: rgb(237, 246, 255) !important;

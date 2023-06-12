@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { DatePicker, Form, Input, Select, Space } from "antd";
 import { IMarriage } from "../../../interfaces/Marriage";
 import { useForm } from "antd/lib/form/Form";
@@ -12,7 +12,6 @@ interface Props {
   form?: any
 }
 const Information: React.FC<Props> = ({ id, marriage, form }) => {
-
   // hàm chỉ nhận số
   const onlyGetNumber = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!/[0-9]/.test(e.key)) {
@@ -22,10 +21,7 @@ const Information: React.FC<Props> = ({ id, marriage, form }) => {
   const validateFields = async (nameInput: string) => {
     try {
       await form.validateFields([nameInput]);
-      // Xử lý khi tất cả các trường hợp lệ
     } catch (errors) {
-      console.log(errors)
-      // Xử lý khi có lỗi
     }
   };
   return (
@@ -77,7 +73,7 @@ const Information: React.FC<Props> = ({ id, marriage, form }) => {
                 name="gender"
                 rules={[{ required: true, message: "Please choose Gender" }]}
               >
-                <Select placeholder="Choose Gender" options={genderState} />
+                <Select onBlur={() => validateFields('gender')} placeholder="Choose Gender" options={genderState} />
               </Form.Item>
             </Space>
           </div>
@@ -101,6 +97,7 @@ const Information: React.FC<Props> = ({ id, marriage, form }) => {
                 rules={[{ required: true, message: "" }]}
               >
                 <DatePicker
+                  onBlur={() => validateFields('dob')}
                   format="YYYY/MM/DD"
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[260px]"
                 />
@@ -127,6 +124,7 @@ const Information: React.FC<Props> = ({ id, marriage, form }) => {
                 rules={[{ required: true, message: "Please input KTP No" }]}
               >
                 <Input
+                  onBlur={() => validateFields('ktp_no')}
                   onKeyPress={onlyGetNumber}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]"
                 />
@@ -144,6 +142,7 @@ const Information: React.FC<Props> = ({ id, marriage, form }) => {
                 ]}
               >
                 <Input
+                  onBlur={() => validateFields('nc_id')}
                   onKeyPress={onlyGetNumber}
                   className="bg-[#F1F3F5] text-[#11181C] text-base rounded-lg py-3 px-3 outline-none w-[316px]"
                 />
